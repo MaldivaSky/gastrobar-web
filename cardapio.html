@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardápio · Lagoon Gastro Bar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96D;
+      --dark: #080808;
+      --dark-2: #101010;
+      --dark-3: #181818;
+      --dark-4: #1E1E1E;
+      --text: #F0EBE1;
+      --text-muted: #8A8070;
+      --red: #C0392B;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(8,8,8,0.97);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 400;
+      letter-spacing: 0.15em; color: var(--gold-light);
+      text-decoration: none;
+    }
+    .nav-logo span { font-style: italic; color: var(--text); }
+
+    /* ── CATEGORY TABS ── */
+    .tabs-wrapper {
+      display: flex; gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 0 8px;
+    }
+    .tabs-wrapper::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      background: none; border: none;
+      padding: 8px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); cursor: pointer; white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+    .nav-back {
+      font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); text-decoration: none; white-space: nowrap;
+      transition: color 0.3s;
+    }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── HERO DO CARDÁPIO ── */
+    .menu-hero {
+      margin-top: 65px;
+      padding: 80px 48px 60px;
+      text-align: center;
+      background: linear-gradient(to bottom, #0E0B04, var(--dark));
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 65%);
+    }
+    .menu-hero-content { position: relative; }
+    .menu-hero-badge {
+      display: inline-block;
+      font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid rgba(201,168,76,0.3);
+      padding: 6px 18px; margin-bottom: 20px;
+    }
+    .menu-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 300; line-height: 1;
+      color: var(--text); margin-bottom: 12px;
+    }
+    .menu-hero h1 em { font-style: italic; color: var(--gold-light); }
+    .menu-hero p {
+      font-size: 0.8rem; color: var(--text-muted);
+      letter-spacing: 0.05em; max-width: 500px; margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── STICKY CATEGORY NAV ── */
+    .cat-nav {
+      position: sticky; top: 65px; z-index: 90;
+      background: rgba(8,8,8,0.98);
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      backdrop-filter: blur(12px);
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* ── SECTION ── */
+    .menu-section { padding: 80px 48px; max-width: 1400px; margin: 0 auto; }
+
+    .section-header { margin-bottom: 56px; }
+    .section-label {
+      font-size: 0.58rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; color: var(--text);
+    }
+    .section-title em { font-style: italic; color: var(--gold-light); }
+    .section-divider {
+      width: 50px; height: 1px; background: var(--gold); margin-top: 20px;
+    }
+
+    /* ── PRATOS (FEATURED) ── */
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2px;
+    }
+
+    .featured-card {
+      position: relative; overflow: hidden; cursor: pointer;
+      aspect-ratio: 4/3;
+    }
+    .featured-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.7) saturate(1.1);
+      transition: transform 0.7s ease, filter 0.4s ease;
+    }
+    .featured-card:hover img {
+      transform: scale(1.07); filter: brightness(0.85) saturate(1.3);
+    }
+    .featured-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.1) 55%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 28px;
+      transition: background 0.4s;
+    }
+    .featured-card:hover .featured-overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.2) 55%);
+    }
+    .featured-badge {
+      position: absolute; top: 18px; left: 18px;
+      background: var(--gold); color: var(--dark);
+      font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 5px 12px; font-weight: 600;
+    }
+    .featured-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400; color: var(--text);
+      margin-bottom: 6px; line-height: 1.1;
+    }
+    .featured-desc {
+      font-size: 0.72rem; color: rgba(240,235,225,0.65); line-height: 1.6;
+      margin-bottom: 14px; max-height: 0; overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.4s;
+      opacity: 0;
+    }
+    .featured-card:hover .featured-desc { max-height: 80px; opacity: 1; }
+    .featured-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .featured-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 300; color: var(--gold-light);
+    }
+    .featured-tag {
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); border: 1px solid rgba(154,144,128,0.3);
+      padding: 4px 10px;
+    }
+
+    /* ── LISTA HORIZONTAL (cervejas/drinks) ── */
+    .list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .list-card {
+      display: flex; gap: 20px; align-items: center;
+      background: var(--dark-3);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 20px;
+      transition: border-color 0.3s, background 0.3s;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+    }
+    .list-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--gold);
+      transform: scaleX(0); transition: transform 0.3s;
+    }
+    .list-card:hover { background: var(--dark-4); border-color: rgba(201,168,76,0.2); }
+    .list-card:hover::after { transform: scaleX(1); }
+
+    .list-img {
+      width: 80px; height: 80px; object-fit: cover; flex-shrink: 0;
+      filter: saturate(0.9);
+      transition: filter 0.3s;
+    }
+    .list-card:hover .list-img { filter: saturate(1.2); }
+
+    .list-info { flex: 1; min-width: 0; }
+    .list-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-weight: 400; color: var(--text);
+      margin-bottom: 4px; line-height: 1.2;
+    }
+    .list-origin {
+      font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 6px;
+    }
+    .list-desc {
+      font-size: 0.72rem; color: var(--text-muted); line-height: 1.5;
+    }
+    .list-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 300; color: var(--gold-light);
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── DRINKS (TALL CARDS) ── */
+    .drinks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .drink-card {
+      background: var(--dark-3);
+      border: 1px solid rgba(255,255,255,0.05);
+      overflow: hidden; cursor: pointer;
+      transition: border-color 0.3s;
+      position: relative;
+    }
+    .drink-card:hover { border-color: rgba(201,168,76,0.3); }
+    .drink-img-wrap { height: 220px; overflow: hidden; position: relative; }
+    .drink-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.85) saturate(1.1);
+      transition: transform 0.6s, filter 0.4s;
+    }
+    .drink-card:hover .drink-img-wrap img {
+      transform: scale(1.08); filter: brightness(1) saturate(1.3);
+    }
+    .drink-alcool {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(8,8,8,0.85);
+      font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); padding: 4px 10px;
+      border: 1px solid rgba(201,168,76,0.3);
+    }
+    .drink-body { padding: 22px 20px; }
+    .drink-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 400; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .drink-ingredients {
+      font-size: 0.68rem; color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 16px; font-style: italic;
+    }
+    .drink-footer {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .drink-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 300; color: var(--gold-light);
+    }
+    .drink-ml {
+      font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.1em;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.9); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--dark-3); border: 1px solid rgba(201,168,76,0.2);
+      max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      animation: modalIn 0.35s ease;
+    }
+    @media (max-width: 640px) { .modal { grid-template-columns: 1fr; } }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-img { height: 100%; min-height: 320px; overflow: hidden; }
+    .modal-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: saturate(1.15);
+    }
+    .modal-body { padding: 44px 36px; display: flex; flex-direction: column; }
+    .modal-label {
+      font-size: 0.58rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px;
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: var(--text);
+      line-height: 1.1; margin-bottom: 18px;
+    }
+    .modal-desc {
+      font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;
+      margin-bottom: 24px; flex: 1;
+    }
+    .modal-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .modal-tag {
+      font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); border: 1px solid rgba(154,144,128,0.25);
+      padding: 5px 12px;
+    }
+    .modal-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 300; color: var(--gold-light);
+      margin-bottom: 24px;
+    }
+    .modal-close {
+      position: absolute; top: 20px; right: 20px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 1.6rem; cursor: pointer; transition: color 0.3s;
+      line-height: 1;
+    }
+    .modal-close:hover { color: var(--gold); }
+    .modal-overlay { position: fixed; }
+
+    /* ── SEPARADOR DE SEÇÃO ── */
+    .section-sep {
+      border: none;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      margin: 0 48px;
+    }
+
+    /* ── DESTAQUE ESPECIAL ── */
+    .chef-banner {
+      margin: 0 48px 80px;
+      background: linear-gradient(135deg, #12100A 0%, #1A1408 50%, #12100A 100%);
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 48px 56px;
+      display: flex; align-items: center; justify-content: space-between; gap: 32px;
+      flex-wrap: wrap;
+    }
+    .chef-banner-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300; color: var(--text); margin-bottom: 8px;
+    }
+    .chef-banner-text h3 em { font-style: italic; color: var(--gold-light); }
+    .chef-banner-text p {
+      font-size: 0.78rem; color: var(--text-muted); line-height: 1.7;
+      max-width: 480px;
+    }
+    .chef-badge {
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 12px;
+    }
+
+    /* ── BTN ── */
+    .btn-gold {
+      display: inline-block; padding: 14px 32px;
+      background: var(--gold); color: var(--dark);
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 600; text-decoration: none; cursor: pointer;
+      border: none; font-family: 'Montserrat', sans-serif;
+      transition: background 0.3s;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(201,168,76,0.12);
+      padding: 48px;
+      text-align: center;
+      background: var(--dark-2);
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 300; letter-spacing: 0.2em;
+      color: var(--gold-light); margin-bottom: 8px;
+    }
+    footer p {
+      font-size: 0.65rem; color: var(--text-muted);
+      letter-spacing: 0.15em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .menu-hero { padding: 60px 24px 40px; }
+      .menu-section { padding: 60px 24px; }
+      .section-sep { margin: 0 24px; }
+      .chef-banner { margin: 0 24px 60px; padding: 32px; }
+      .drinks-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Lago<span>on</span></a>
+  <div class="cat-nav" style="position:static; border:none; background:none; padding:0; flex:1; margin: 0 24px;">
+    <div class="tabs-wrapper" id="tabsWrapper">
+      <button class="tab-btn active" onclick="scrollToSection('entradas')">Entradas</button>
+      <button class="tab-btn" onclick="scrollToSection('pratos')">Pratos</button>
+      <button class="tab-btn" onclick="scrollToSection('porcoes')">Porções</button>
+      <button class="tab-btn" onclick="scrollToSection('drinks')">Drinks</button>
+      <button class="tab-btn" onclick="scrollToSection('cervejas')">Cervejas</button>
+      <button class="tab-btn" onclick="scrollToSection('sobremesas')">Sobremesas</button>
+    </div>
+  </div>
+  <a href="index.html" class="nav-back">← Voltar ao Site</a>
+</nav>
+
+<!-- HERO -->
+<div class="menu-hero">
+  <div class="menu-hero-content">
+    <div class="menu-hero-badge">Cardápio · Lagoon Gastro Bar</div>
+    <h1>Comer com<br>os <em>olhos</em></h1>
+    <p>Ingredientes selecionados, drinques autorais e uma curadoria feita para surpreender a cada visita.</p>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     ENTRADAS
+════════════════════════ -->
+<section class="menu-section" id="entradas">
+  <div class="section-header">
+    <p class="section-label">Para começar</p>
+    <h2 class="section-title">Entre<em>das</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="featured-grid">
+
+    <div class="featured-card" onclick="openModal('bruschetta')">
+      <img src="https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=700&q=85" alt="Bruschetta" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-badge">Chef's Pick</div>
+        <div class="featured-name">Bruschetta ao Funghi</div>
+        <div class="featured-desc">Cogumelos funghi secchi refogados na manteiga trufada, sobre pão artesanal tostado com azeite de ervas e lascas de parmesão.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 42</span>
+          <span class="featured-tag">Vegetariano</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('ceviche')">
+      <img src="https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?w=700&q=85" alt="Ceviche" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-name">Ceviche da Casa</div>
+        <div class="featured-desc">Tilápia marinada no limão siciliano, pimenta cumari, coentro fresco, cebola roxa e leite de tigre com toque de mel.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 58</span>
+          <span class="featured-tag">Sem Glúten</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('burrata')">
+      <img src="https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=700&q=85" alt="Burrata" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-badge">Novo</div>
+        <div class="featured-name">Burrata com Tomate Confit</div>
+        <div class="featured-desc">Burrata cremosa sobre cama de tomates-cereja confitados por 4 horas, pesto de manjericão, nozes caramelizadas e redução balsâmica.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 65</span>
+          <span class="featured-tag">Vegetariano</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('camarao')">
+      <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=700&q=85" alt="Camarão" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-name">Camarões na Manteiga</div>
+        <div class="featured-desc">Camarões grandes salteados na manteiga de ervas com alho dourado, vinho branco e finalização de limão. Servidos com pão crocante.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 72</span>
+          <span class="featured-tag">Frutos do Mar</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-sep" />
+
+<!-- ════════════════════════
+     PRATOS PRINCIPAIS
+════════════════════════ -->
+<section class="menu-section" id="pratos">
+  <div class="section-header">
+    <p class="section-label">O coração do cardápio</p>
+    <h2 class="section-title">Pratos <em>Principais</em></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <!-- CHEF DESTAQUE -->
+  <div class="chef-banner">
+    <div>
+      <p class="chef-badge">★ Prato do Chef · Exclusivo</p>
+      <div class="chef-banner-text">
+        <h3>Picanha <em>Maturada 45 dias</em></h3>
+        <p>Nossa picanha passa por 45 dias de maturação a seco, garantindo maciez e sabor incomparáveis. Servida ao ponto com manteiga de ervas, farofa de bacon artesanal e batatas rústicas. Para 2 pessoas.</p>
+      </div>
+    </div>
+    <div style="text-align:right; flex-shrink:0;">
+      <div style="font-family:'Cormorant Garamond',serif; font-size:2.5rem; color:var(--gold-light); font-weight:300;">R$ 198</div>
+      <div style="font-size:0.62rem; color:var(--text-muted); letter-spacing:0.1em;">para 2 pessoas</div>
+      <br>
+      <button class="btn-gold" onclick="openModal('picanha')">Ver Detalhes</button>
+    </div>
+  </div>
+
+  <div class="featured-grid">
+
+    <div class="featured-card" onclick="openModal('salmon')">
+      <img src="https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=700&q=85" alt="Salmão" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-name">Salmão Grelhado ao Limão</div>
+        <div class="featured-desc">Filé de salmão norueguês sobre risoto de aspargos com redução de maracujá e chips de alho-poró.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 89</span>
+          <span class="featured-tag">Sem Glúten</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('burger')">
+      <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&q=85" alt="Burger" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-badge">Mais Pedido</div>
+        <div class="featured-name">Lagoon Smash Burger</div>
+        <div class="featured-desc">Blend de fraldinha e acém (180g), smashado na chapa, queijo americano e cheddar derretido, pickles da casa, molho especial e brioche artesanal.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 62</span>
+          <span class="featured-tag">+ batata frita</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('massa')">
+      <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=700&q=85" alt="Massa" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-name">Tagliatelle ao Tartufo</div>
+        <div class="featured-desc">Massa fresca artesanal, creme de trufas negras, cogumelos salteados, lascas de parmesão envelhecido e azeite de trufa.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 74</span>
+          <span class="featured-tag">Vegetariano</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('frango')">
+      <img src="https://images.unsplash.com/photo-1598515213692-b4a3a4a59e67?w=700&q=85" alt="Frango" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-name">Frango Mediterrâneo</div>
+        <div class="featured-desc">Coxa e sobrecoxa marinadas em ervas mediterrâneas, assadas lentamente e servidas com purê de couve-flor e salada grega fresca.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 64</span>
+          <span class="featured-tag">Sem Glúten</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-sep" />
+
+<!-- ════════════════════════
+     PORÇÕES
+════════════════════════ -->
+<section class="menu-section" id="porcoes">
+  <div class="section-header">
+    <p class="section-label">Para compartilhar</p>
+    <h2 class="section-title">Por<em>ções</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="list-grid">
+
+    <div class="list-card" onclick="openModal('batata-frita')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&q=80" alt="Batata Frita" />
+      <div class="list-info">
+        <div class="list-name">Batata Rústica com Alecrim</div>
+        <div class="list-origin">Porção · 300g</div>
+        <div class="list-desc">Batata palha grossa frita na hora, temperada com sal grosso e alecrim fresco. Servida com aioli da casa.</div>
+      </div>
+      <div class="list-price">R$ 36</div>
+    </div>
+
+    <div class="list-card" onclick="openModal('bolinho')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=200&q=80" alt="Bolinho" />
+      <div class="list-info">
+        <div class="list-name">Bolinho de Bacalhau Premium</div>
+        <div class="list-origin">10 unidades</div>
+        <div class="list-desc">Bacalhau do Porto dessalgado, massa aerada, frito em imersão. Acompanha molho de azeitonas pretas e limão.</div>
+      </div>
+      <div class="list-price">R$ 52</div>
+    </div>
+
+    <div class="list-card" onclick="openModal('costelinha')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&q=80" alt="Costelinha" />
+      <div class="list-info">
+        <div class="list-name">Costelinha BBQ</div>
+        <div class="list-origin">Porção · 500g</div>
+        <div class="list-desc">Costelinha suína marinada por 12h, cozida lentamente e grelhada com molho barbecue defumado artesanal.</div>
+      </div>
+      <div class="list-price">R$ 78</div>
+    </div>
+
+    <div class="list-card" onclick="openModal('carpaccio')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1607116667981-ff4c2a9dcfdb?w=200&q=80" alt="Carpaccio" />
+      <div class="list-info">
+        <div class="list-name">Carpaccio de Filé-Mignon</div>
+        <div class="list-origin">Entrada · para 2</div>
+        <div class="list-desc">Filé fatiado finamente, alcaparras, parmesão em lascas, molho de mostarda Dijon e rúcula selvagem.</div>
+      </div>
+      <div class="list-price">R$ 66</div>
+    </div>
+
+    <div class="list-card" onclick="openModal('mix-fritos')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1639024471283-03518883512d?w=200&q=80" alt="Mix de Fritos" />
+      <div class="list-info">
+        <div class="list-name">Mix de Fritos do Lagoon</div>
+        <div class="list-origin">Para compartilhar</div>
+        <div class="list-desc">Combinação de anéis de lula, camarão empanado, bolinho de bacalhau e casquinha de caranguejo. Molhos à parte.</div>
+      </div>
+      <div class="list-price">R$ 92</div>
+    </div>
+
+    <div class="list-card" onclick="openModal('tábua')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=200&q=80" alt="Tábua" />
+      <div class="list-info">
+        <div class="list-name">Tábua de Frios e Queijos</div>
+        <div class="list-origin">Para 4 pessoas</div>
+        <div class="list-desc">Seleção de queijos artesanais, embutidos importados, geleias, mel e torradas. A tábua perfeita para acompanhar o vinho.</div>
+      </div>
+      <div class="list-price">R$ 118</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-sep" />
+
+<!-- ════════════════════════
+     DRINKS
+════════════════════════ -->
+<section class="menu-section" id="drinks">
+  <div class="section-header">
+    <p class="section-label">Autoria e técnica</p>
+    <h2 class="section-title">Drinks <em>Autorais</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="drinks-grid">
+
+    <div class="drink-card" onclick="openModal('lagoon-sour')">
+      <div class="drink-img-wrap">
+        <img src="https://images.unsplash.com/photo-1536935338788-846bb9981813?w=500&q=85" alt="Lagoon Sour" loading="lazy" />
+        <span class="drink-alcool">Com Álcool</span>
+      </div>
+      <div class="drink-body">
+        <div class="drink-name">Lagoon Sour</div>
+        <div class="drink-ingredients">Gin artesanal · Limão tahiti · Clara em neve · Xarope de lavanda · Espuma de camomila</div>
+        <div class="drink-footer">
+          <span class="drink-price">R$ 42</span>
+          <span class="drink-ml">300ml</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="drink-card" onclick="openModal('passion-fire')">
+      <div class="drink-img-wrap">
+        <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&q=85" alt="Passion Fire" loading="lazy" />
+        <span class="drink-alcool">Com Álcool</span>
+      </div>
+      <div class="drink-body">
+        <div class="drink-name">Passion Fire</div>
+        <div class="drink-ingredients">Cachaça premium · Maracujá fresco · Pimenta rosa · Mel de abelha · Limão cravo · Açúcar refinado</div>
+        <div class="drink-footer">
+          <span class="drink-price">R$ 38</span>
+          <span class="drink-ml">280ml</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="drink-card" onclick="openModal('blue-lagoon-drink')">
+      <div class="drink-img-wrap">
+        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=85" alt="Blue Lagoon" loading="lazy" />
+        <span class="drink-alcool">Com Álcool</span>
+      </div>
+      <div class="drink-body">
+        <div class="drink-name">Blue Lagoon</div>
+        <div class="drink-ingredients">Vodka · Blue Curaçao · Suco de limão · Água com gás · Flor de sabugueiro · Gelo artesanal</div>
+        <div class="drink-footer">
+          <span class="drink-price">R$ 40</span>
+          <span class="drink-ml">300ml</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="drink-card" onclick="openModal('espresso-martini')">
+      <div class="drink-img-wrap">
+        <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=500&q=85" alt="Espresso Martini" loading="lazy" />
+        <span class="drink-alcool">Com Álcool</span>
+      </div>
+      <div class="drink-body">
+        <div class="drink-name">Espresso Martini</div>
+        <div class="drink-ingredients">Vodka · Licor de café · Espresso duplo · Xarope de baunilha · Grãos de café torrado</div>
+        <div class="drink-footer">
+          <span class="drink-price">R$ 44</span>
+          <span class="drink-ml">250ml</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="drink-card" onclick="openModal('hibiscus')">
+      <div class="drink-img-wrap">
+        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=85" alt="Hibiscus" loading="lazy" />
+        <span class="drink-alcool" style="background:rgba(30,60,30,0.85); color:#6DBF6D; border-color:rgba(109,191,109,0.3);">Sem Álcool</span>
+      </div>
+      <div class="drink-body">
+        <div class="drink-name">Hibiscus Fizz</div>
+        <div class="drink-ingredients">Chá de hibisco gelado · Limão siciliano · Xarope de gengibre · Água com gás · Hortelã fresca</div>
+        <div class="drink-footer">
+          <span class="drink-price">R$ 28</span>
+          <span class="drink-ml">350ml</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="drink-card" onclick="openModal('whisky-sour')">
+      <div class="drink-img-wrap">
+        <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=500&q=85" alt="Whisky Sour" loading="lazy" />
+        <span class="drink-alcool">Com Álcool</span>
+      </div>
+      <div class="drink-body">
+        <div class="drink-name">Whisky Smoked Sour</div>
+        <div class="drink-ingredients">Bourbon americano · Limão tahiti · Xarope de açúcar demerara · Clara em neve · Defumado com lascas de carvalho</div>
+        <div class="drink-footer">
+          <span class="drink-price">R$ 48</span>
+          <span class="drink-ml">280ml</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-sep" />
+
+<!-- ════════════════════════
+     CERVEJAS
+════════════════════════ -->
+<section class="menu-section" id="cervejas">
+  <div class="section-header">
+    <p class="section-label">Seleção Curada</p>
+    <h2 class="section-title">Cerve<em>jas</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="list-grid">
+
+    <div class="list-card" onclick="openModal('heineken')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1608270586620-248524c67de9?w=200&q=80" alt="Heineken" />
+      <div class="list-info">
+        <div class="list-name">Heineken</div>
+        <div class="list-origin">Holanda · Lager · 5% ABV</div>
+        <div class="list-desc">Refrescante e equilibrada. A clássica europeia, servida bem gelada em copo tulipa.</div>
+      </div>
+      <div class="list-price">R$ 18 <br><small style="font-size:0.65rem; color:var(--text-muted)">330ml</small></div>
+    </div>
+
+    <div class="list-card" onclick="openModal('colorado')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=200&q=80" alt="Colorado" />
+      <div class="list-info">
+        <div class="list-name">Colorado Indica</div>
+        <div class="list-origin">Brasil · IPA · 6.5% ABV</div>
+        <div class="list-desc">IPA nacional com notas cítricas marcantes de lúpulo americano. Levemente amarga e aromática.</div>
+      </div>
+      <div class="list-price">R$ 26 <br><small style="font-size:0.65rem; color:var(--text-muted)">355ml</small></div>
+    </div>
+
+    <div class="list-card" onclick="openModal('stella')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=200&q=80" alt="Stella" />
+      <div class="list-info">
+        <div class="list-name">Stella Artois</div>
+        <div class="list-origin">Bélgica · Pilsen · 5% ABV</div>
+        <div class="list-desc">Elegante e suave, com sabor maltado delicado. A escolha clássica para acompanhar qualquer prato.</div>
+      </div>
+      <div class="list-price">R$ 22 <br><small style="font-size:0.65rem; color:var(--text-muted)">550ml</small></div>
+    </div>
+
+    <div class="list-card" onclick="openModal('guinness')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1518176258769-f227c798150e?w=200&q=80" alt="Guinness" />
+      <div class="list-info">
+        <div class="list-name">Guinness Draught</div>
+        <div class="list-origin">Irlanda · Stout · 4.2% ABV</div>
+        <div class="list-desc">O ícone irlandês. Encorpada, cremosa, com notas de café e chocolate. Servida em copo pint.</div>
+      </div>
+      <div class="list-price">R$ 34 <br><small style="font-size:0.65rem; color:var(--text-muted)">568ml</small></div>
+    </div>
+
+    <div class="list-card" onclick="openModal('corona')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1510972527921-ce03766a1cf1?w=200&q=80" alt="Corona" />
+      <div class="list-info">
+        <div class="list-name">Corona Extra</div>
+        <div class="list-origin">México · Lager · 4.6% ABV</div>
+        <div class="list-desc">Leve e refrescante, servida com fatia de limão. Ideal para noites de verão.</div>
+      </div>
+      <div class="list-price">R$ 20 <br><small style="font-size:0.65rem; color:var(--text-muted)">355ml</small></div>
+    </div>
+
+    <div class="list-card" onclick="openModal('artesanal')">
+      <img class="list-img" src="https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=200&q=80" alt="Artesanal" />
+      <div class="list-info">
+        <div class="list-name">Lagoon IPA Exclusiva</div>
+        <div class="list-origin">Parceria Local · IPA · 6.8% ABV</div>
+        <div class="list-desc">Produzida exclusivamente para o Lagoon por cervejaria artesanal de Guarulhos. Receita secreta, disponibilidade limitada.</div>
+      </div>
+      <div class="list-price">R$ 32 <br><small style="font-size:0.65rem; color:var(--text-muted)">473ml</small></div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-sep" />
+
+<!-- ════════════════════════
+     SOBREMESAS
+════════════════════════ -->
+<section class="menu-section" id="sobremesas">
+  <div class="section-header">
+    <p class="section-label">O final perfeito</p>
+    <h2 class="section-title">Sobre<em>mesas</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="featured-grid">
+
+    <div class="featured-card" onclick="openModal('petit-gateau')">
+      <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=700&q=85" alt="Petit Gateau" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-badge">Clássico</div>
+        <div class="featured-name">Petit Gâteau de Chocolate</div>
+        <div class="featured-desc">Bolinho de chocolate belga com coração derretido, servido com sorvete de baunilha e calda de frutas vermelhas.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 38</span>
+          <span class="featured-tag">Quente</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('cheesecake')">
+      <img src="https://images.unsplash.com/photo-1508737027454-e6454ef45afd?w=700&q=85" alt="Cheesecake" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-name">Cheesecake de Frutas Vermelhas</div>
+        <div class="featured-desc">Cheesecake assado na base de biscoito amanteigado, cobertura de geleia de frutas vermelhas frescas e chantilly artesanal.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 34</span>
+          <span class="featured-tag">Gelado</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-card" onclick="openModal('tiramisu')">
+      <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=700&q=85" alt="Tiramisu" loading="lazy" />
+      <div class="featured-overlay">
+        <div class="featured-badge">Favorito</div>
+        <div class="featured-name">Tiramisù da Casa</div>
+        <div class="featured-desc">Receita tradicional italiana com biscoito champanhe, espresso, mascarpone cremoso e cacau em pó. Feito diariamente.</div>
+        <div class="featured-footer">
+          <span class="featured-price">R$ 36</span>
+          <span class="featured-tag">Sem Forno</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Lagoon</div>
+  <p>Av. São Luíz, 822 · Vila Rosalia · Guarulhos — SP · Ao lado do Lago dos Patos</p>
+  <br>
+  <a href="index.html" style="color:var(--gold); font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase;">← Voltar ao Site</a>
+</footer>
+
+<!-- ════════════════════════
+     MODAL
+════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-img">
+      <img id="modalImg" src="" alt="" />
+    </div>
+    <div class="modal-body" style="position:relative;">
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
+      <div class="modal-label" id="modalLabel"></div>
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-tags" id="modalTags"></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <button class="btn-gold" onclick="closeModalDirect()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── DADOS DOS ITENS ──
+  const items = {
+    bruschetta: {
+      label: 'Entrada · Vegetariano',
+      title: 'Bruschetta ao Funghi',
+      img: 'https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=900&q=90',
+      desc: 'Cogumelos funghi secchi hidratados e refogados lentamente na manteiga trufada com alho confitado. Servidos sobre fatias generosas de pão artesanal tostado no azeite de ervas e finalizado com lascas de parmesão maturado 24 meses e redução de aceto balsâmico.',
+      tags: ['Vegetariano', 'Sem Carne', 'Contém Glúten', 'Para 1 pessoa'],
+      price: 'R$ 42'
+    },
+    ceviche: {
+      label: 'Entrada · Frutos do Mar',
+      title: 'Ceviche da Casa',
+      img: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?w=900&q=90',
+      desc: 'Tilápia frescíssima marinada no suco de limão siciliano por 20 minutos, com pimenta cumari, coentro fresco picado, cebola roxa em julienne e leite de tigre com toque de mel e gengibre. Acompanha chips de mandioca crocantes.',
+      tags: ['Sem Glúten', 'Frutos do Mar', 'Apimentado', 'Para 1 pessoa'],
+      price: 'R$ 58'
+    },
+    burrata: {
+      label: 'Entrada · Novo no Cardápio',
+      title: 'Burrata com Tomate Confit',
+      img: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=900&q=90',
+      desc: 'Burrata cremosa italiana sobre uma cama de tomates-cereja confitados lentamente por 4 horas no azeite extra virgem com tomilho fresco. Finalizado com pesto de manjericão, nozes caramelizadas no mel e redução balsâmica. Servido com pão de fermentação natural.',
+      tags: ['Vegetariano', 'Contém Glúten', 'Para 1-2 pessoas'],
+      price: 'R$ 65'
+    },
+    camarao: {
+      label: 'Entrada · Frutos do Mar',
+      title: 'Camarões na Manteiga',
+      img: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=900&q=90',
+      desc: 'Camarões grandes (tamanho 21/25) salteados em frigideira de ferro na manteiga de ervas premium com alho dourado, vinho branco seco e finalização de limão siciliano. Servidos com fatias de pão crocante para aproveitar cada gota do molho.',
+      tags: ['Sem Glúten', 'Frutos do Mar', 'Contém Lactose', 'Para 1-2 pessoas'],
+      price: 'R$ 72'
+    },
+    picanha: {
+      label: 'Prato do Chef · Destaque',
+      title: 'Picanha Maturada 45 dias',
+      img: 'https://images.unsplash.com/photo-1558030006-450675393462?w=900&q=90',
+      desc: 'Nossa picanha passa por 45 dias de maturação a seco (dry aged) em câmara climatizada, desenvolvendo sabor e maciez incomparáveis. Servida ao ponto desejado com manteiga de ervas derretendo por cima, farofa de bacon artesanal tostada com manteiga clarificada e batatas rústicas temperadas com alecrim e páprica defumada.',
+      tags: ['Sem Glúten', 'Para 2 pessoas', 'Carne Vermelha', '45 dias Dry Aged'],
+      price: 'R$ 198'
+    },
+    salmon: {
+      label: 'Prato Principal · Frutos do Mar',
+      title: 'Salmão Grelhado ao Limão',
+      img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=900&q=90',
+      desc: 'Filé de salmão norueguês (220g) grelhado em frigideira antiaderente com crosta dourada perfeita. Servido sobre risoto cremoso de aspargos verdes e parmesão, com redução de maracujá e chips de alho-poró crocantes.',
+      tags: ['Sem Glúten', 'Frutos do Mar', 'Contém Lactose'],
+      price: 'R$ 89'
+    },
+    burger: {
+      label: 'Prato Principal · Mais Pedido',
+      title: 'Lagoon Smash Burger',
+      img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900&q=90',
+      desc: 'Blend exclusivo de fraldinha e acém (180g) smashado na chapa quente formando crosta caramelizada irresistível. Duplo queijo americano e cheddar derretido em cascata, pickles artesanais da casa, cebola crispy, alface americana, tomate e molho especial do Lagoon em brioche artesanal. Acompanha batata frita crocante.',
+      tags: ['Contém Glúten', 'Para 1 pessoa', 'Carne Bovina', 'Mais Pedido'],
+      price: 'R$ 62'
+    },
+    massa: {
+      label: 'Prato Principal · Vegetariano',
+      title: 'Tagliatelle ao Tartufo',
+      img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=900&q=90',
+      desc: 'Massa fresca tagliatelle produzida diariamente na nossa cozinha, envolta em creme de trufas negras de qualidade premium, cogumelos paris e shitake salteados em azeite, lascas generosas de parmesão envelhecido 24 meses e finalização com azeite de trufa italiana.',
+      tags: ['Vegetariano', 'Contém Glúten', 'Contém Lactose'],
+      price: 'R$ 74'
+    },
+    frango: {
+      label: 'Prato Principal · Sem Glúten',
+      title: 'Frango Mediterrâneo',
+      img: 'https://images.unsplash.com/photo-1598515213692-b4a3a4a59e67?w=900&q=90',
+      desc: 'Coxa e sobrecoxa de frango caipira marinadas por 24h em ervas mediterrâneas (tomilho, alecrim, sálvia), alho confitado e azeite extra virgem. Assadas lentamente até pele dourada e crocante. Servidas com purê aveludado de couve-flor com manteiga e salada grega fresca.',
+      tags: ['Sem Glúten', 'Para 1 pessoa'],
+      price: 'R$ 64'
+    },
+    'batata-frita': {
+      label: 'Porção · Acompanhamento',
+      title: 'Batata Rústica com Alecrim',
+      img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=900&q=90',
+      desc: 'Batata palha grossa cortada e frita duas vezes (método double fry) para máxima crocância. Temperada na hora com sal grosso artesanal e alecrim fresco. Servida com aioli de alho negro da casa.',
+      tags: ['Vegano', 'Sem Glúten', '300g', 'Para 2 pessoas'],
+      price: 'R$ 36'
+    },
+    bolinho: {
+      label: 'Porção · Especialidade',
+      title: 'Bolinho de Bacalhau Premium',
+      img: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=900&q=90',
+      desc: 'Bacalhau do Porto dessalgado por 48 horas em água gelada trocada regularmente. Massa aerada e levíssima, frito em óleo limpo a 180°C. Acompanha molho vinagrette de azeitonas pretas e rodela de limão siciliano.',
+      tags: ['Sem Glúten', '10 unidades', 'Para 2-3 pessoas'],
+      price: 'R$ 52'
+    },
+    costelinha: {
+      label: 'Porção · Churrasco',
+      title: 'Costelinha BBQ',
+      img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=900&q=90',
+      desc: 'Costelinha suína de primeira linha marinada por 12 horas em blend de especiarias. Cozida lentamente a baixa temperatura por 4 horas até ficar desmanchando no osso, finalizada na grelha com molho barbecue defumado artesanal.',
+      tags: ['Sem Glúten', '500g', 'Para 2 pessoas'],
+      price: 'R$ 78'
+    },
+    carpaccio: {
+      label: 'Entrada Fria · Premium',
+      title: 'Carpaccio de Filé-Mignon',
+      img: 'https://images.unsplash.com/photo-1607116667981-ff4c2a9dcfdb?w=900&q=90',
+      desc: 'Filé-mignon congelado e fatiado finamente na máquina, disposto em leque no prato. Temperado com azeite extra virgem, alcaparras sicilianas, lascas de parmesão maturado, molho de mostarda Dijon com mel e pimenta e rúcula selvagem fresca.',
+      tags: ['Sem Glúten', 'Carne Bovina', 'Para 2 pessoas'],
+      price: 'R$ 66'
+    },
+    'mix-fritos': {
+      label: 'Porção · Para Compartilhar',
+      title: 'Mix de Fritos do Lagoon',
+      img: 'https://images.unsplash.com/photo-1639024471283-03518883512d?w=900&q=90',
+      desc: 'Nossa combinação perfeita: anéis de lula empanados, camarões crocantes na farinha panko, bolinhos de bacalhau e casquinha de caranguejo gratinada. Servido com três molhos: aioli, tártaro e molho de pimenta.',
+      tags: ['Frutos do Mar', 'Para 3-4 pessoas', 'Contém Glúten'],
+      price: 'R$ 92'
+    },
+    tábua: {
+      label: 'Porção · Premium',
+      title: 'Tábua de Frios e Queijos',
+      img: 'https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=900&q=90',
+      desc: 'Seleção curada de queijos artesanais brasileiros e importados (gouda, brie, gorgonzola e colonial defumado), acompanhados de embutidos importados (presunto cru, salame italiano, chorizo espanhol), geleias artesanais, mel de laranjeira, nozes e torradas crocantes. A escolha perfeita para acompanhar vinho.',
+      tags: ['Sem Glúten (adapte)', 'Para 4 pessoas', 'Contém Lactose'],
+      price: 'R$ 118'
+    },
+    'lagoon-sour': {
+      label: 'Drink Autoral · Com Álcool',
+      title: 'Lagoon Sour',
+      img: 'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=900&q=90',
+      desc: 'Nossa assinatura em forma de drink. Gin artesanal nacional balanceado com suco de limão tahiti fresco, xarope de lavanda produzido na casa, emulsificado com clara de ovo fresca para textura sedosa. Finalizado com espuma aromática de chá de camomila. Delicado, floral e surpreendente.',
+      tags: ['Com Álcool', '300ml', 'Gin Based', 'Floral'],
+      price: 'R$ 42'
+    },
+    'passion-fire': {
+      label: 'Drink Autoral · Com Álcool',
+      title: 'Passion Fire',
+      img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=900&q=90',
+      desc: 'A versão sofisticada da nossa caipirinha. Cachaça premium envelhecida em carvalho, maracujá fresco espremido na hora, pimenta rosa levemente amassada para aroma sem ardência excessiva, mel de abelha nativa e limão cravo. Refrescante com finalização picante.',
+      tags: ['Com Álcool', '280ml', 'Cachaça Based', 'Apimentado'],
+      price: 'R$ 38'
+    },
+    'blue-lagoon-drink': {
+      label: 'Drink Autoral · Com Álcool',
+      title: 'Blue Lagoon',
+      img: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=900&q=90',
+      desc: 'Nosso drink icônico que leva o nome da casa. Vodka premium, Blue Curaçao que dá a cor azul deslumbrante, suco de limão siciliano, água com gás gelada e licor de flor de sabugueiro para toque floral. Servido com gelo artesanal em cubo grande.',
+      tags: ['Com Álcool', '300ml', 'Vodka Based', 'Fotogênico'],
+      price: 'R$ 40'
+    },
+    'espresso-martini': {
+      label: 'Drink Autoral · Com Álcool',
+      title: 'Espresso Martini',
+      img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=900&q=90',
+      desc: 'O clássico contemporâneo reinventado. Vodka de alta qualidade, licor de café Kahlúa, espresso duplo recém-extraído ainda quente e xarope de baunilha. Shakeado vigorosamente até criar a espuma densa e cremosa característica. Finalizado com 3 grãos de café torrado.',
+      tags: ['Com Álcool', '250ml', 'Vodka Based', 'Contém Cafeína'],
+      price: 'R$ 44'
+    },
+    hibiscus: {
+      label: 'Drink Autoral · Sem Álcool',
+      title: 'Hibiscus Fizz',
+      img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=900&q=90',
+      desc: 'Uma explosão de cor e sabor sem uma gota de álcool. Chá de hibisco preparado concentrado e gelado, limão siciliano espremido na hora, xarope artesanal de gengibre fresco, água com gás e ramos de hortelã fresca. Refrescante, bonito e cheio de sabor.',
+      tags: ['Sem Álcool', '350ml', 'Vegano', 'Sem Açúcar refinado'],
+      price: 'R$ 28'
+    },
+    'whisky-sour': {
+      label: 'Drink Autoral · Com Álcool',
+      title: 'Whisky Smoked Sour',
+      img: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=900&q=90',
+      desc: 'Nível avançado de bartending. Bourbon americano premium balanceado com limão tahiti fresco e xarope de açúcar demerara artesanal. Emulsificado com clara de ovo para textura aveludada. O toque especial: defumação na hora com lascas de madeira de carvalho para aroma marcante.',
+      tags: ['Com Álcool', '280ml', 'Bourbon Based', 'Defumado'],
+      price: 'R$ 48'
+    },
+    heineken: {
+      label: 'Cerveja · Importada',
+      title: 'Heineken',
+      img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=900&q=90',
+      desc: 'A cerveja mais reconhecida do mundo. Lager holandesa de fermentação lenta a frio, com equilíbrio perfeito entre amargor suave e refrescância. Servida bem gelada em copo tulipa.',
+      tags: ['330ml', 'Lager', '5% ABV', 'Holanda'],
+      price: 'R$ 18'
+    },
+    colorado: {
+      label: 'Cerveja · Artesanal Nacional',
+      title: 'Colorado Indica',
+      img: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=900&q=90',
+      desc: 'Uma das IPAs nacionais mais premiadas do Brasil. Produzida pela Colorado em Ribeirão Preto, com lúpulos americanos Cascade e Centennial que entregam notas cítricas intensas de toranja e pinho. Levemente amarga e muito aromática.',
+      tags: ['355ml', 'IPA', '6.5% ABV', 'Brasil'],
+      price: 'R$ 26'
+    },
+    stella: {
+      label: 'Cerveja · Importada',
+      title: 'Stella Artois',
+      img: 'https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7?w=900&q=90',
+      desc: 'Elegante pilsen belga com receita que data de 1366. Sabor suavemente maltado, leve amargor de lúpulo nobre e finalização limpa e seca. A escolha clássica que harmoniza com praticamente todo o cardápio.',
+      tags: ['550ml', 'Pilsen', '5% ABV', 'Bélgica'],
+      price: 'R$ 22'
+    },
+    guinness: {
+      label: 'Cerveja · Importada Premium',
+      title: 'Guinness Draught',
+      img: 'https://images.unsplash.com/photo-1518176258769-f227c798150e?w=900&q=90',
+      desc: 'O ícone absoluto das stouts irlandesas. Cor ebano profunda, colarinho cremoso produzido pelo nitrogênio, com notas complexas de café torrado, chocolate amargo e um leve toque de caramelo. Servida em copo pint oficial.',
+      tags: ['568ml', 'Stout', '4.2% ABV', 'Irlanda'],
+      price: 'R$ 34'
+    },
+    corona: {
+      label: 'Cerveja · Importada',
+      title: 'Corona Extra',
+      img: 'https://images.unsplash.com/photo-1510972527921-ce03766a1cf1?w=900&q=90',
+      desc: 'Lager mexicana leve, refrescante e de sabor suave com toque de milho. O ritual da fatia de limão espremida na garrafa é parte da experiência. Perfeita para noites quentes.',
+      tags: ['355ml', 'Lager', '4.6% ABV', 'México'],
+      price: 'R$ 20'
+    },
+    artesanal: {
+      label: 'Cerveja · Exclusiva Lagoon',
+      title: 'Lagoon IPA Exclusiva',
+      img: 'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=900&q=90',
+      desc: 'Produzida em parceria exclusiva com cervejaria artesanal de Guarulhos especialmente para o Lagoon. Receita única desenvolvida pelo nosso bartender com os mestres cervejeiros. IPA com notas tropicais de manga e maracujá, amargor presente mas equilibrado. Disponibilidade limitada.',
+      tags: ['473ml', 'IPA', '6.8% ABV', 'Exclusiva', 'Guarulhos'],
+      price: 'R$ 32'
+    },
+    'petit-gateau': {
+      label: 'Sobremesa · Quente',
+      title: 'Petit Gâteau de Chocolate',
+      img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=900&q=90',
+      desc: 'Clássico irresistível. Bolinho de chocolate belga 70% cacau com coração derretido que corre ao ser aberto. Massa aerada e intensa. Servido imediatamente após o forno com bola de sorvete de baunilha artesanal e calda de frutas vermelhas frescas.',
+      tags: ['Contém Glúten', 'Contém Lactose', 'Servido Quente'],
+      price: 'R$ 38'
+    },
+    cheesecake: {
+      label: 'Sobremesa · Gelada',
+      title: 'Cheesecake de Frutas Vermelhas',
+      img: 'https://images.unsplash.com/photo-1508737027454-e6454ef45afd?w=900&q=90',
+      desc: 'Cheesecake assado tradicional sobre base de biscoito amanteigado triturado. Recheio cremoso e denso de cream cheese com baunilha natural. Cobertura generosa de geleia artesanal de frutas vermelhas (morango, amora e framboesa) e chantilly batido na casa.',
+      tags: ['Contém Glúten', 'Contém Lactose', 'Servido Gelado'],
+      price: 'R$ 34'
+    },
+    tiramisu: {
+      label: 'Sobremesa · Favorita',
+      title: 'Tiramisù da Casa',
+      img: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=900&q=90',
+      desc: 'Receita tradicional italiana preparada diariamente. Biscoito champanhe embebido em espresso forte e licor Amaretto, intercalado com creme de mascarpone batido com gemas e açúcar de confeiteiro. Finalizado com camada generosa de cacau em pó premium peneirado.',
+      tags: ['Contém Glúten', 'Contém Lactose', 'Contém Álcool', 'Feito Diariamente'],
+      price: 'R$ 36'
+    }
+  };
+
+  function openModal(id) {
+    const item = items[id];
+    if (!item) return;
+    document.getElementById('modalImg').src = item.img;
+    document.getElementById('modalImg').alt = item.title;
+    document.getElementById('modalLabel').textContent = item.label;
+    document.getElementById('modalTitle').textContent = item.title;
+    document.getElementById('modalDesc').textContent = item.desc;
+    document.getElementById('modalPrice').textContent = item.price;
+    const tagsEl = document.getElementById('modalTags');
+    tagsEl.innerHTML = item.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+  }
+
+  function closeModalDirect() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModalDirect();
+  });
+
+  // ── TABS ATIVAS NO SCROLL ──
+  const sections = ['entradas','pratos','porcoes','drinks','cervejas','sobremesas'];
+  const tabBtns = document.querySelectorAll('.tab-btn');
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const offset = 80;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  window.addEventListener('scroll', () => {
+    let current = sections[0];
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 200) current = id;
+    });
+    tabBtns.forEach((btn, i) => {
+      btn.classList.toggle('active', sections[i] === current);
+    });
+  });
+</script>
+</body>
+</html>

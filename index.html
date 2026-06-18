@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lagoon Gastro Bar · Guarulhos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96D;
+      --dark: #0A0A0A;
+      --dark-2: #111111;
+      --dark-3: #1A1A1A;
+      --text: #F0EBE1;
+      --text-muted: #9A9080;
+      --green: #2D4A2D;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%);
+      transition: background 0.4s;
+    }
+    nav.scrolled { background: rgba(10,10,10,0.97); }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--gold-light);
+    }
+    .nav-logo span { font-style: italic; color: var(--text); }
+
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    .nav-cta {
+      padding: 10px 24px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.75) 100%),
+        url('https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=1800&q=80') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 12s ease-out forwards;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to   { transform: scale(1.0); }
+    }
+
+    .hero-content { position: relative; z-index: 2; padding: 0 20px; }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+      padding: 8px 20px;
+      margin-bottom: 28px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 10vw, 8rem);
+      font-weight: 300;
+      line-height: 0.9;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .hero-subtitle {
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-primary {
+      padding: 16px 40px;
+      background: var(--gold);
+      color: var(--dark);
+      text-decoration: none;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .btn-primary:hover { background: var(--gold-light); }
+
+    .btn-outline {
+      padding: 16px 40px;
+      border: 1px solid rgba(240,235,225,0.4);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 120px 48px; }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .section-title em { font-style: italic; color: var(--gold-light); }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 28px 0;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      background: var(--dark-2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 120px 48px;
+    }
+
+    .about-text p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .about-img-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px 200px;
+      gap: 12px;
+    }
+
+    .about-img {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.85) saturate(0.9);
+      transition: transform 0.6s, filter 0.4s;
+    }
+
+    .about-img:hover img { transform: scale(1.05); filter: brightness(1) saturate(1.1); }
+    .about-img:first-child { grid-row: span 2; }
+
+    /* ── HIGHLIGHTS ── */
+    .highlights-section {
+      background: var(--dark);
+      text-align: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .highlights-header { margin-bottom: 72px; }
+    .highlights-header .divider { margin: 28px auto; }
+
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .highlight-card {
+      background: var(--dark-3);
+      padding: 48px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+      cursor: default;
+    }
+
+    .highlight-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .highlight-card:hover { background: #1E1A14; }
+    .highlight-card:hover::before { transform: scaleX(1); }
+
+    .highlight-icon {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .highlight-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+    }
+
+    .highlight-card p {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    /* ── MENU CTA ── */
+    .menu-cta {
+      background: linear-gradient(135deg, #111 0%, #1a1508 50%, #111 100%);
+      border-top: 1px solid rgba(201,168,76,0.2);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      padding: 100px 48px;
+      text-align: center;
+    }
+
+    .menu-cta .section-title { margin-bottom: 20px; }
+
+    .menu-cta p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    /* ── AMBIENCE ── */
+    .ambience {
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      height: 520px;
+    }
+
+    .ambience-panel {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .ambience-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.6) saturate(0.8);
+      transition: transform 0.7s, filter 0.5s;
+    }
+
+    .ambience-panel:hover img {
+      transform: scale(1.08);
+      filter: brightness(0.8) saturate(1.1);
+    }
+
+    .ambience-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      padding: 32px;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
+    }
+
+    .ambience-overlay span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--text);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.4s;
+    }
+
+    .ambience-panel:hover .ambience-overlay span {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── REVIEWS ── */
+    .reviews-section {
+      background: var(--dark-2);
+      text-align: center;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .reviews-section .section-title { margin-bottom: 8px; }
+    .reviews-section .divider { margin: 28px auto; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+
+    .review-card {
+      background: var(--dark-3);
+      padding: 40px 36px;
+      border: 1px solid rgba(201,168,76,0.1);
+      text-align: left;
+      position: relative;
+    }
+
+    .review-card::before {
+      content: '"';
+      position: absolute;
+      top: 20px; left: 32px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: rgba(201,168,76,0.15);
+      line-height: 1;
+    }
+
+    .review-stars { color: var(--gold); font-size: 0.8rem; margin-bottom: 20px; }
+
+    .review-card p {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .reviewer {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* ── INFO ── */
+    .info-section {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 120px 48px;
+    }
+
+    .info-block h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .info-icon { font-size: 1.1rem; margin-top: 2px; flex-shrink: 0; }
+
+    .info-row-text strong {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .info-row-text span {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .map-placeholder {
+      background: var(--dark-3);
+      border: 1px solid rgba(201,168,76,0.15);
+      height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .map-placeholder:hover { border-color: var(--gold); }
+
+    .map-placeholder span:first-child { font-size: 2rem; }
+
+    .map-placeholder span:last-child {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark-2);
+      border-top: 1px solid rgba(201,168,76,0.15);
+      padding: 64px 48px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--gold-light);
+    }
+
+    .footer-logo small {
+      display: block;
+      font-size: 0.55rem;
+      letter-spacing: 0.6em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .footer-links { display: flex; gap: 32px; }
+    .footer-links a {
+      text-decoration: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-size: 0.65rem;
+      color: rgba(154,144,128,0.5);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── TOUR 360 ── */
+    .tour-section {
+      background: var(--dark);
+      padding: 120px 48px;
+    }
+    .tour-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .tour-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .tour-header .divider { margin: 28px auto; }
+    .tour-header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    #panorama {
+      width: 100%;
+      height: 560px;
+      border: 1px solid rgba(201,168,76,0.2);
+      position: relative;
+    }
+    .tour-hint {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .tour-hint span { color: var(--gold); }
+
+    /* ── RESERVATION FLOAT ── */
+    .reserve-float {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 99;
+      background: var(--gold);
+      color: var(--dark);
+      text-decoration: none;
+      padding: 14px 28px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      box-shadow: 0 8px 32px rgba(201,168,76,0.4);
+      transition: all 0.3s;
+      animation: fadeInUp 1s 1.5s both;
+    }
+    .reserve-float:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(201,168,76,0.5);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      section, .about, .info-section { padding: 80px 24px; }
+      .about, .info-section { grid-template-columns: 1fr; gap: 48px; }
+      .highlights-grid { grid-template-columns: repeat(2, 1fr); }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .ambience { grid-template-columns: 1fr; height: auto; }
+      .ambience-panel { height: 280px; }
+      .ambience-overlay span { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Lago<span>on</span></div>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#tour">Tour 360°</a></li>
+    <li><a href="#experiencia">Experiência</a></li>
+    <li><a href="#cardapio">Cardápio</a></li>
+    <li><a href="#eventos">Agenda</a></li>
+    <li><a href="#avaliacoes">Avaliações</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Gastro Bar · São Paulo</div>
+    <h1 class="hero-title">
+      Lago<em>on</em>
+    </h1>
+    <p class="hero-subtitle">Gastro Bar</p>
+    <div class="hero-actions">
+      <a href="cardapio.html" target="_blank" class="btn-primary">Ver Cardápio</a>
+      <a href="#tour" class="btn-outline">Tour 360°</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<div id="sobre" style="background: var(--dark-2);">
+  <div class="about">
+    <div class="about-text">
+      <p class="section-label">Nossa história</p>
+      <h2 class="section-title">Onde o sabor<br>encontra a <em>atmosfera</em></h2>
+      <div class="divider"></div>
+      <p>O <strong>Lagoon Gastro Bar</strong> nasceu da vontade de criar um lugar onde cada detalhe importa — da luz que aquece o ambiente à última nota musical que fica no ar.</p>
+      <p>Com um cardápio que celebra ingredientes selecionados, drinques autorais e um ambiente sofisticado, somos o destino certo para quem busca uma experiência gastronômica completa em São Paulo.</p>
+      <p>Seja para um jantar especial, uma celebração ou simplesmente curtir uma boa noite com quem você ama — <strong>o Lagoon tem um lugar reservado para você.</strong></p>
+      <br>
+      <a href="#cardapio" class="btn-outline" style="display:inline-block">Explorar o Cardápio</a>
+    </div>
+    <div class="about-img-grid">
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80" alt="Ambiente do bar" />
+      </div>
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&q=80" alt="Drinques" />
+      </div>
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=400&q=80" alt="Gastronomia" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOUR 360 -->
+<div id="tour" class="tour-section">
+  <div class="tour-inner">
+    <div class="tour-header">
+      <p class="section-label">Experiência Imersiva</p>
+      <h2 class="section-title">Tour <em>360°</em> pelo Espaço</h2>
+      <div class="divider"></div>
+      <p>Arraste para explorar cada canto do Lagoon antes mesmo de chegar. Sinta a atmosfera, a decoração e o ambiente que fazem da sua noite algo único.</p>
+    </div>
+    <div id="panorama"></div>
+    <p class="tour-hint">
+      <span>Clique e arraste</span> para explorar · Use a roda do mouse para dar zoom
+    </p>
+  </div>
+</div>
+
+<!-- HIGHLIGHTS -->
+<div id="experiencia" style="background: var(--dark); padding: 120px 48px;">
+  <div class="highlights-section">
+    <div class="highlights-header">
+      <p class="section-label">O que nos define</p>
+      <h2 class="section-title">Uma experiência <em>completa</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <div class="highlight-icon">🍸</div>
+        <h3>Coquetéis Autorais</h3>
+        <p>Criações exclusivas da nossa bartender, com ingredientes frescos e combinações inusitadas que surpreendem a cada gole.</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🍺</div>
+        <h3>Seleção de Cervejas</h3>
+        <p>Rótulos nacionais e importados criteriosamente selecionados para harmonizar com cada prato do nosso cardápio.</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">🎵</div>
+        <h3>Música ao Vivo</h3>
+        <p>Noites animadas com artistas selecionados que criam a trilha sonora perfeita para sua experiência.</p>
+      </div>
+      <div class="highlight-card">
+        <div class="highlight-icon">⚽</div>
+        <h3>Tela para Esportes</h3>
+        <p>Acompanhe os grandes jogos com a melhor estrutura e o melhor petisco para torcer com seus amigos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AMBIENCE GALLERY -->
+<div class="ambience">
+  <div class="ambience-panel">
+    <img src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?w=800&q=80" alt="Ambiente interno" />
+    <div class="ambience-overlay"><span>Ambiente Sofisticado</span></div>
+  </div>
+  <div class="ambience-panel">
+    <img src="https://images.unsplash.com/photo-1525268323446-0505b6fe7778?w=800&q=80" alt="Drinks" />
+    <div class="ambience-overlay"><span>Drinks Exclusivos</span></div>
+  </div>
+  <div class="ambience-panel">
+    <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=800&q=80" alt="Gastronomia" />
+    <div class="ambience-overlay"><span>Alta Gastronomia</span></div>
+  </div>
+</div>
+
+<!-- MENU CTA -->
+<div id="cardapio" class="menu-cta">
+  <p class="section-label">Cardápio</p>
+  <h2 class="section-title">Descubra cada<br><em>sabor</em> do Lagoon</h2>
+  <p>Do aperitivo à sobremesa, passando pelos drinques autorais e uma curadoria de bebidas para todos os gostos. Confira nosso cardápio completo e venha preparado para se surpreender.</p>
+  <a href="cardapio.html" target="_blank" class="btn-primary">Acessar o Cardápio Completo</a>
+</div>
+
+<!-- REVIEWS -->
+<div id="avaliacoes" style="background: var(--dark-2); padding: 120px 48px;">
+  <div class="reviews-section">
+    <p class="section-label">O que dizem nossos clientes</p>
+    <h2 class="section-title">Experiências <em>reais</em></h2>
+    <div class="divider"></div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>"Ambiente lindo, música perfeita e os coquetéis são simplesmente incríveis. Celebrei meu aniversário aqui e foi uma noite inesquecível. Com certeza vou voltar!"</p>
+        <div class="reviewer">— Mariana S. · Google</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>"Atendimento impecável, equipe super atenciosa. O ambiente é sofisticado sem ser formal demais. Ótima opção para quem quer uma noite diferente em São Paulo."</p>
+        <div class="reviewer">— Carlos M. · Google</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★☆</div>
+        <p>"Adoro vir aqui para assistir os jogos! A estrutura é excelente, as cervejas geladas e o petisco acompanha muito bem. Recomendo o bolinho de bacalhau."</p>
+        <div class="reviewer">— Pedro A. · Google</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO -->
+<div id="contato" style="background: var(--dark);">
+  <div class="info-section">
+    <div class="info-block">
+      <h3>Venha nos visitar</h3>
+      <div class="info-row">
+        <div class="info-icon">📍</div>
+        <div class="info-row-text">
+          <strong>Endereço</strong>
+          <span>Av. São Luíz, 822 · Vila Rosalia<br>Guarulhos — SP · 07074-020<br><em style="color:var(--gold);font-style:normal;font-size:0.75rem;">Ao lado do Lago dos Patos</em></span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🕐</div>
+        <div class="info-row-text">
+          <strong>Horário de Funcionamento</strong>
+          <span>Ter — Qui: 18h às 00h<br>Sex — Sáb: 18h às 02h<br>Dom: 17h às 23h</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">📞</div>
+        <div class="info-row-text">
+          <strong>Reservas & Contato</strong>
+          <span>WhatsApp / Telefone<br>Consulte disponibilidade</span>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-icon">🚗</div>
+        <div class="info-row-text">
+          <strong>Serviços</strong>
+          <span>Refeição no local · Para viagem<br>Entrega disponível</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-block">
+      <h3>Localização</h3>
+      <p style="font-size:0.82rem; color: var(--text-muted); line-height:1.7; margin-bottom: 24px;">
+        Localizado na região central de São Paulo, o Lagoon está próximo às principais vias da cidade, com fácil acesso e estacionamento nas redondezas.
+      </p>
+      <a href="https://maps.google.com/?q=Av.+São+Luíz+822+Guarulhos+SP" target="_blank" style="text-decoration:none">
+        <div class="map-placeholder">
+          <span>🗺️</span>
+          <span>Abrir no Google Maps</span>
+        </div>
+      </a>
+      <br>
+      <a href="cardapio.html" target="_blank" class="btn-primary" style="display:inline-block; margin-top: 8px;">Fazer Reserva</a>
+    </div>
+  </div>
+</div>
+
+<!-- EVENTOS -->
+<div id="eventos" style="background:var(--dark);">
+
+  <!-- ══ COPA HERO BANNER ══ -->
+  <div style="position:relative;overflow:hidden;background:#050A03;">
+    <!-- Faixa verde-amarela decorativa -->
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(to right,#009c3b 0%,#009c3b 33%,#FFDF00 33%,#FFDF00 66%,#009c3b 66%,#009c3b 100%);z-index:2;"></div>
+
+    <div style="padding:72px 48px 56px;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr auto;align-items:center;gap:48px;flex-wrap:wrap;">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <span style="font-size:2rem;">🇧🇷</span>
+          <span style="font-size:0.58rem;letter-spacing:0.4em;text-transform:uppercase;color:#009c3b;font-weight:600;">FIFA World Cup 2026 · USA · Canada · Mexico</span>
+        </div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,4.5rem);font-weight:300;color:#F0EBE1;line-height:1;margin-bottom:10px;">
+          Agenda da <em style="font-style:italic;color:#FFDF00;">Copa</em> no Lagoon
+        </h2>
+        <p style="font-size:0.82rem;color:rgba(240,235,225,0.55);line-height:1.8;max-width:520px;margin-bottom:28px;">
+          Todo jogo do Brasil vira festa aqui. Telão gigante, open bar, feijoada, churrasco e a melhor galera de Guarulhos. Garanta seu lugar antes que esgote.
+        </p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="reservas.html" style="display:inline-block;padding:14px 32px;background:#009c3b;color:#fff;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;text-decoration:none;transition:background 0.3s;" onmouseover="this.style.background='#00b344'" onmouseout="this.style.background='#009c3b'">Reservar Mesa →</a>
+          <a href="#agenda-grid" style="display:inline-block;padding:14px 24px;border:1px solid rgba(255,223,0,0.4);color:#FFDF00;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,223,0,0.1)'" onmouseout="this.style.background='transparent'">Ver Todos os Jogos ↓</a>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN -->
+      <div style="background:rgba(0,156,59,0.08);border:1px solid rgba(0,156,59,0.25);padding:32px 36px;text-align:center;flex-shrink:0;min-width:240px;">
+        <div style="font-size:0.55rem;letter-spacing:0.35em;text-transform:uppercase;color:#009c3b;margin-bottom:8px;">🔴 Próximo Jogo do Brasil</div>
+        <div style="font-size:0.72rem;color:#FFDF00;letter-spacing:0.1em;margin-bottom:16px;">🇧🇷 Brasil x Haiti 🇭🇹 · 19/06 · 21h30</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;" id="countdown">
+          <div style="background:rgba(0,0,0,0.4);padding:10px 6px;">
+            <div id="cdDias" style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#FFDF00;line-height:1;">00</div>
+            <div style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,235,225,0.4);margin-top:4px;">Dias</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:10px 6px;">
+            <div id="cdHoras" style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#FFDF00;line-height:1;">00</div>
+            <div style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,235,225,0.4);margin-top:4px;">Horas</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:10px 6px;">
+            <div id="cdMin" style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#FFDF00;line-height:1;">00</div>
+            <div style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,235,225,0.4);margin-top:4px;">Min</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.4);padding:10px 6px;">
+            <div id="cdSeg" style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#FFDF00;line-height:1;">00</div>
+            <div style="font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(240,235,225,0.4);margin-top:4px;">Seg</div>
+          </div>
+        </div>
+        <div style="font-size:0.6rem;color:rgba(240,235,225,0.35);margin-top:12px;">13 Jun · 19h · MetLife Stadium · NY</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CARROSSEL ══ -->
+  <div style="position:relative;overflow:hidden;border-top:1px solid rgba(0,156,59,0.15);" id="carrosselWrap">
+    <div id="carrosselTrack" style="display:flex;transition:transform 0.7s cubic-bezier(0.77,0,0.175,1);"></div>
+    <button id="btnPrev" onclick="slidePrev()" style="position:absolute;left:20px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.7);border:1px solid rgba(255,223,0,0.3);color:#FFDF00;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:10;transition:all 0.3s;line-height:1;" onmouseover="this.style.background='#009c3b';this.style.borderColor='#009c3b';this.style.color='#fff'" onmouseout="this.style.background='rgba(0,0,0,0.7)';this.style.borderColor='rgba(255,223,0,0.3)';this.style.color='#FFDF00'">‹</button>
+    <button id="btnNext" onclick="slideNext()" style="position:absolute;right:20px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.7);border:1px solid rgba(255,223,0,0.3);color:#FFDF00;width:52px;height:52px;font-size:1.5rem;cursor:pointer;z-index:10;transition:all 0.3s;line-height:1;" onmouseover="this.style.background='#009c3b';this.style.borderColor='#009c3b';this.style.color='#fff'" onmouseout="this.style.background='rgba(0,0,0,0.7)';this.style.borderColor='rgba(255,223,0,0.3)';this.style.color='#FFDF00'">›</button>
+    <div id="carrosselDots" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:10;"></div>
+  </div>
+
+  <!-- ══ GRADE AGENDA ══ -->
+  <div id="agenda-grid" style="padding:60px 48px 100px;max-width:1300px;margin:0 auto;">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;">
+      <span style="font-size:1.5rem;">🇧🇷</span>
+      <div>
+        <p style="font-size:0.58rem;letter-spacing:0.35em;text-transform:uppercase;color:#009c3b;margin-bottom:4px;">Calendário Completo</p>
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:#F0EBE1;">Todos os Jogos & Eventos <em style="color:#FFDF00;font-style:italic;">no Lagoon</em></h3>
+      </div>
+    </div>
+    <div id="eventosGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;"></div>
+  </div>
+
+  <div id="eventosEmpty" style="display:none;text-align:center;padding:60px;color:var(--text-muted);font-size:0.82rem;">Em breve novos eventos!</div>
+</div>
+
+<!-- RESERVA CTA -->
+<div style="background:linear-gradient(135deg,#0E0B04 0%,#1A1408 50%,#0E0B04 100%); border-top:1px solid rgba(201,168,76,0.15); border-bottom:1px solid rgba(201,168,76,0.15); padding:100px 48px; text-align:center;">
+  <p class="section-label">Reserve agora</p>
+  <h2 class="section-title" style="margin-bottom:16px;">Garanta sua <em>mesa</em></h2>
+  <p style="font-size:0.85rem; color:var(--text-muted); max-width:480px; margin:0 auto 40px; line-height:1.8;">
+    Escolha sua mesa no mapa interativo, selecione o horário e confirme em minutos. Sem ligação, sem fila.
+  </p>
+  <a href="reservas.html" style="display:inline-block; padding:18px 48px; background:var(--gold); color:var(--dark); text-decoration:none; font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; font-weight:600; transition:background 0.3s;" onmouseover="this.style.background='#E8C96D'" onmouseout="this.style.background='#C9A84C'">
+    Reservar Mesa →
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    Lagoon
+    <small>Gastro Bar</small>
+  </div>
+  <div class="footer-links">
+    <a href="#home">Início</a>
+    <a href="#sobre">Sobre</a>
+    <a href="cardapio.html" target="_blank">Cardápio</a>
+    <a href="#contato">Contato</a>
+  </div>
+  <p class="footer-copy">© 2025 Lagoon Gastro Bar · São Paulo · Todos os direitos reservados</p>
+</footer>
+
+<!-- MODAL EVENTO -->
+<div id="eventoModal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.92);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:24px;overflow-y:auto;">
+  <div style="background:#111;border:1px solid rgba(201,168,76,0.25);max-width:900px;width:100%;margin:auto;animation:modalIn 0.4s ease;position:relative;display:grid;grid-template-columns:1fr 1fr;" id="eventoModalBox">
+
+    <!-- IMAGEM -->
+    <div style="position:relative;min-height:500px;overflow:hidden;">
+      <img id="mImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;filter:brightness(0.75) saturate(1.1);display:block;" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 60%);"></div>
+      <div style="position:absolute;bottom:24px;left:24px;">
+        <span id="mTag" style="display:inline-block;background:#C9A84C;color:#0A0A0A;font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;padding:5px 14px;font-weight:700;"></span>
+      </div>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div style="padding:40px 36px;overflow-y:auto;max-height:90vh;display:flex;flex-direction:column;gap:0;">
+      <button onclick="fecharModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(240,235,225,0.4);font-size:1.8rem;cursor:pointer;line-height:1;transition:color 0.3s;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='rgba(240,235,225,0.4)'">×</button>
+
+      <div id="mData" style="font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:#C9A84C;margin-bottom:10px;"></div>
+      <h2 id="mTitle" style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#F0EBE1;line-height:1.05;margin-bottom:6px;"></h2>
+      <p id="mSubtitle" style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:rgba(201,168,76,0.7);margin-bottom:18px;"></p>
+      <p id="mDesc" style="font-size:0.78rem;color:#8A8070;line-height:1.85;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:24px;"></p>
+
+      <!-- O QUE ESTÁ INCLUÍDO -->
+      <div style="margin-bottom:20px;">
+        <p style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#C9A84C;margin-bottom:12px;">O que está incluído</p>
+        <ul id="mInclusos" style="list-style:none;display:flex;flex-direction:column;gap:8px;"></ul>
+      </div>
+
+      <!-- PROGRAMAÇÃO -->
+      <div style="background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.12);padding:16px 18px;margin-bottom:24px;">
+        <p style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:#C9A84C;margin-bottom:8px;">Programação</p>
+        <p id="mProg" style="font-size:0.75rem;color:#8A8070;line-height:1.7;"></p>
+      </div>
+
+      <!-- PREÇO + CTA -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:auto;">
+        <div>
+          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:#8A8070;margin-bottom:4px;">Valor por pessoa</div>
+          <div id="mPrice" style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:#E8C96D;"></div>
+        </div>
+        <a href="reservas.html" style="display:inline-block;padding:14px 28px;background:#C9A84C;color:#0A0A0A;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;text-decoration:none;transition:background 0.3s;white-space:nowrap;" onmouseover="this.style.background='#E8C96D'" onmouseout="this.style.background='#C9A84C'">
+          Reservar Mesa →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes modalIn { from{opacity:0;transform:scale(0.96) translateY(16px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+  @media(max-width:680px){ #eventoModalBox{grid-template-columns:1fr!important} #eventoModalBox>div:first-child{min-height:220px!important} }
+</style>
+
+<!-- FLOAT CTA -->
+<a href="cardapio.html" target="_blank" class="reserve-float">
+  Ver Cardápio
+</a>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+  const supabase = createClient(
+    'https://amrwxiiqxbbuvhtqkzzi.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtcnd4aWlxeGJidXZodHFrenppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTMwMzUsImV4cCI6MjA5NzM4OTAzNX0.qwxSprDf5hGzuU9dzVkQ7tlG38U2KPNXeLzkpPp1adk'
+  );
+  window._supabase = supabase;
+
+  // ── CARROSSEL ──
+  let slideAtual = 0;
+  let totalSlides = 0;
+  let autoSlide;
+
+  function buildSlide(e, idx) {
+    const [y,m,d] = e.date.split('-');
+    const dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const dataObj = new Date(e.date + 'T12:00:00');
+    const dataStr = `${dias[dataObj.getDay()]}, ${d} de ${meses[parseInt(m)-1]} · ${e.time}h`;
+
+    return `
+      <div style="min-width:100%;position:relative;height:560px;overflow:hidden;flex-shrink:0;">
+        <img src="${e.img}" alt="${e.title}"
+          style="width:100%;height:100%;object-fit:cover;filter:brightness(0.38) saturate(1.1);"
+          onerror="this.src='https://images.unsplash.com/photo-1574096079513-d8259312b785?w=1400&q=80'" />
+        <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.5) 55%,transparent 100%);display:flex;align-items:center;padding:80px 80px 80px 80px;">
+          <div style="max-width:580px;">
+            ${e.urgencia ? `<div style="display:inline-block;background:${e.urgencia==='ESGOTANDO AGORA'?'#e53935':'#009c3b'};color:#fff;font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;padding:5px 14px;margin-bottom:10px;font-weight:800;animation:pulse 1.5s infinite;">🔥 ${e.urgencia}${e.vagas?' · '+e.vagas+' VAGAS':''}</div><br>` : ''}
+            <span style="display:inline-block;background:#C9A84C;color:#0A0A0A;font-size:0.56rem;letter-spacing:0.3em;text-transform:uppercase;padding:6px 16px;margin-bottom:20px;font-weight:700;">${e.tag || e.type}</span>
+            <div style="font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(201,168,76,0.85);margin-bottom:14px;">${dataStr}</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:300;color:#F0EBE1;line-height:1;margin-bottom:10px;">${e.title}</h3>
+            <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:rgba(240,235,225,0.55);margin-bottom:18px;">${e.subtitle || ''}</p>
+            <p style="font-size:0.8rem;color:rgba(240,235,225,0.5);line-height:1.85;margin-bottom:32px;max-width:440px;">${e.desc || ''}</p>
+            <div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:#E8C96D;">${e.price || ''}</span>
+              <button onclick="abrirModal(${e.id})" style="padding:14px 28px;background:transparent;border:1px solid rgba(201,168,76,0.6);color:#C9A84C;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif;transition:all 0.3s;"
+                onmouseover="this.style.background='rgba(201,168,76,0.12)';this.style.borderColor='#C9A84C'" onmouseout="this.style.background='transparent';this.style.borderColor='rgba(201,168,76,0.6)'">Ver Detalhes</button>
+            <a href="reservas.html" style="padding:14px 28px;background:#C9A84C;color:#0A0A0A;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;text-decoration:none;font-weight:700;transition:background 0.3s;"
+                onmouseover="this.style.background='#E8C96D'" onmouseout="this.style.background='#C9A84C'">Garantir Lugar →</a>
+            </div>
+          </div>
+        </div>
+        <!-- contador -->
+        <div style="position:absolute;top:32px;right:40px;font-size:0.6rem;letter-spacing:0.2em;color:rgba(240,235,225,0.35);">
+          <span class="slide-num-curr"></span> / <span class="slide-num-total"></span>
+        </div>
+      </div>`;
+  }
+
+  function goToSlide(n) {
+    const track = document.getElementById('carrosselTrack');
+    slideAtual = (n + totalSlides) % totalSlides;
+    track.style.transform = `translateX(-${slideAtual * 100}%)`;
+    document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+      dot.style.background = i === slideAtual ? '#C9A84C' : 'rgba(255,255,255,0.25)';
+      dot.style.width = i === slideAtual ? '28px' : '8px';
+    });
+    document.querySelectorAll('.slide-num-curr').forEach(el => el.textContent = slideAtual + 1);
+  }
+
+  function slideNext() { goToSlide(slideAtual + 1); resetAuto(); }
+  function slidePrev() { goToSlide(slideAtual - 1); resetAuto(); }
+
+  function resetAuto() {
+    clearInterval(autoSlide);
+    autoSlide = setInterval(() => goToSlide(slideAtual + 1), 5500);
+  }
+
+  // ── EVENTOS ──
+  const DEMO_EVENTS = [
+    {
+      id:2, destaque:'sim', status:'ativo',
+      vagas:8, urgencia:'ÚLTIMAS VAGAS',
+      tag:'🇧🇷 QUINTA · 19 JUN · 21h30',
+      type:'Jogo do Brasil · Fase de Grupos', date:'2026-06-19', time:'21:30',
+      title:'Brasil x Haiti', subtitle:'A galera do Lagoon vai parar Guarulhos',
+      desc:'Traz a turma, vem com a camisa e esquece o resto! O Lagoon vira a maior arena da cidade: telão 120", chopp liberado, costelinha na brasa e samba antes de a bola rolar. O Haiti? Não tem chance. O Brasil goleia — e a gente comemora junto aqui.',
+      price:'R$ 80 por pessoa',
+      inclusos:['Chopp e caipirinha liberados durante o jogo','Petiscos Copa: costelinha, bolinho e casquinha','Assento reservado com visão total do telão','Shot grátis a cada gol do Brasil 🥃','Samba ao vivo antes do jogo · DJ após'],
+      programacao:'20h Samba de abertura · 21h Petiscos e chopp liberado · 21h30 Jogo ao vivo · Após: Baile da vitória',
+      img:'https://images.unsplash.com/photo-1705593973313-75de7bf95b56?w=1400&q=90'
+    },
+    {
+      id:3, destaque:'nao', status:'ativo',
+      vagas:22, urgencia:null,
+      tag:'🇧🇷 QUARTA · 24 JUN · 19h',
+      type:'Jogo do Brasil · Fase de Grupos', date:'2026-06-24', time:'19:00',
+      title:'Brasil x Escócia', subtitle:'Última da fase de grupos — classificação garantida',
+      desc:'Brasil já classificado, jogando pelo primeiro lugar do grupo. A pressão é dos outros — aqui no Lagoon é só alegria! Churrasco de cortes nobres no almoço, telão pra todo lado e roda de samba após o apito final. Vem fazer parte dessa história.',
+      price:'R$ 75 por pessoa',
+      inclusos:['Churrasco completo: picanha, linguiça e fraldinha','Farofa, vinagrete, pão de alho e saladas','1 chopp artesanal incluso na entrada','Mesa reservada no telão · Estacionamento gratuito'],
+      programacao:'17h30 Churrasco aberto · 19h Jogo ao vivo · Após: Roda de samba',
+      img:'https://images.unsplash.com/photo-1434648957308-5e6a859697e8?w=1400&q=90'
+    },
+    {
+      id:4, destaque:'nao', status:'ativo',
+      vagas:28, urgencia:null,
+      tag:'🥁 DOMINGO · 21 JUN · 12h',
+      type:'Samba & Gastronomia', date:'2026-06-21', time:'12:00',
+      title:'Samba com Feijoada', subtitle:'Grupo DuPagode ao vivo — do jeito que o povo gosta',
+      desc:'Domingo é sagrado no Lagoon. Feijoada completa feita desde o dia anterior — feijão, costela, linguiça, orelha, pé e lombo — tudo isso com o Grupo DuPagode mandando o melhor samba de raiz de Guarulhos. Do lado do Lago dos Patos, do jeito certo, com a galera certa.',
+      price:'R$ 75 por pessoa',
+      inclusos:['Feijoada completa com todos os cortes tradicionais','Arroz, couve, farofa, laranja e torresmo','Caipirinha de boas-vindas','Show ao vivo Grupo DuPagode (3 horas)','Pudim artesanal da casa de sobremesa'],
+      programacao:'12h Feijoada aberta · 13h30 Show DuPagode · 16h30 Roda de samba aberta',
+      img:'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=90'
+    },
+    {
+      id:5, destaque:'nao', status:'ativo',
+      vagas:10, urgencia:'RESERVA ANTECIPADA',
+      tag:'⚔️ MATA-MATA · 29 JUN',
+      type:'Oitavas · Se o Brasil avançar', date:'2026-06-29', time:'14:00',
+      title:'Oitavas de Final', subtitle:'Reserve já — se o Brasil passar, seu lugar tá garantido',
+      desc:'Não espera o Brasil classificar pra reservar — quando isso acontecer já vai estar lotado. Garanta agora e cancela de graça se precisar. Mata-mata com o Lagoon lotado, dois telões, chopp ilimitado e shot grátis a cada gol. É esse o ambiente que você quer estar.',
+      price:'R$ 90 por pessoa',
+      inclusos:['Chopp artesanal ilimitado durante o jogo','Shot grátis a cada gol do Brasil','Tábua de frios especial da Copa','Assento VIP reservado no telão principal','DJ Copa Edition + banda ao vivo após'],
+      programacao:'13h Check-in · 13h30 DJ Copa Edition · 14h Jogo ao vivo · Após: Banda ao vivo',
+      img:'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=1400&q=90'
+    },
+    {
+      id:6, destaque:'nao', status:'ativo',
+      vagas:6, urgencia:'RESERVA ANTECIPADA',
+      tag:'🏆 QUARTAS · 05 JUL',
+      type:'Quartas · Se o Brasil avançar', date:'2026-07-05', time:'16:00',
+      title:'Quartas de Final', subtitle:'Se o Brasil tiver aqui, o Lagoon vai à loucura total',
+      desc:'Se a Seleção chegar nas Quartas, isso aqui vira o epicentro de Guarulhos. Estrutura máxima: dois telões fullHD, open bar 3 horas, picanha maturada na brasa. Reserve agora com cancelamento gratuito — quando lotar, acabou. E vai lotar.',
+      price:'R$ 110 por pessoa',
+      inclusos:['Open bar 3h (chopp, caipirinha, cervejas premium)','Picanha maturada e costela de ripa na brasa','Farofa, vinagrete e pão de alho','Camarote com visão privilegiada do telão','1h extra de open bar grátis se o Brasil passar'],
+      programacao:'14h30 Churrasco e check-in · 15h30 DJ Copa · 16h Jogo ao vivo · Após: Celebração aberta',
+      img:'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1400&q=90'
+    },
+    {
+      id:7, destaque:'nao', status:'ativo',
+      vagas:5, urgencia:'RESERVA ANTECIPADA',
+      tag:'🥇 SEMIFINAL · 14 JUL',
+      type:'Semifinal · Se o Brasil avançar', date:'2026-07-14', time:'16:00',
+      title:'Semifinal', subtitle:'A um passo da Final — e você precisa estar aqui',
+      desc:'Semifinal da Copa do Mundo. Se você tiver no Lagoon nessa noite, vai contar esse dia pelo resto da vida. Palco ao vivo, dois telões, open bar premium 4 horas, churrasco de gala. Reserve hoje com cancelamento gratuito — quando isso começar a vender, não para mais.',
+      price:'R$ 160 por pessoa',
+      inclusos:['Open bar premium 4h (whisky, gin, vodka, chopp)','Churrasco completo: picanha, costela, fraldinha','Petiscos gourmet a noite toda','Palco ao vivo antes e após o jogo','Kit torcida exclusivo Lagoon Copa 2026'],
+      programacao:'14h Check-in VIP · 15h Churrasco e show · 16h Semifinal ao vivo · Após: Festa da classificação',
+      img:'https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=1400&q=90'
+    },
+    {
+      id:8, destaque:'nao', status:'ativo',
+      vagas:3, urgencia:'ESGOTANDO AGORA',
+      tag:'🏆 FINAL · 19 JUL · 16h',
+      type:'Final da Copa do Mundo 2026', date:'2026-07-19', time:'16:00',
+      title:'Final da Copa do Mundo', subtitle:'19 de julho. Lagoon. O evento mais épico do ano.',
+      desc:'Com ou sem o Brasil — a Final da Copa do Mundo acontece aqui no Lagoon. Dois telões de 150" fullHD, palco ao vivo, camarote VIP, open bar premium 5 horas, churrasco de gala. Restam só 3 ingressos. Se você deixar pra depois, vai se arrepender pra sempre.',
+      price:'R$ 220 por pessoa',
+      inclusos:['Open bar premium 5h (whisky, gin, vodka, espumante, chopp)','Churrasco de gala: picanha maturada 45 dias, costela, salmão grelhado','Petiscos gourmet ilimitados · Mesa no camarote VIP','Palco ao vivo antes e após a Final · DJ set exclusivo','Kit Copa Lagoon 2026: camiseta, buzina e bandeira','Brinde com espumante se o Brasil for Campeão 🍾'],
+      programacao:'14h Check-in VIP · 14h30 Churrasco de gala · 15h Show ao vivo · 16h Final ao vivo · Após: Festa do Hexacampeonato',
+      img:'https://images.unsplash.com/photo-1527871252447-4ce32da643c6?w=1400&q=90'
+    },
+    {
+      id:9, destaque:'nao', status:'ativo',
+      vagas:35, urgencia:null,
+      tag:'🎷 26 JUL · Pós-Copa',
+      type:'Jazz & Samba ao Vivo', date:'2026-07-26', time:'20:00',
+      title:'Noite do Jazz & Samba', subtitle:'Copa acabou. Mas a festa no Lagoon não para.',
+      desc:'Copa encerrada, memórias eternas — e o Lagoon celebra com uma noite incrível. O Quarteto São Paulo Jazz sobe ao palco misturando jazz brasileiro, MPB e samba de raiz. Cardápio especial pós-copa, harmonizações do chef e os melhores drinks autorais da casa. Venha fechar o mês com chave de ouro.',
+      price:'R$ 45 couvert',
+      inclusos:['Show ao vivo Quarteto São Paulo Jazz — 2h30 de puro talento','Couvert artístico incluso no ingresso','Cardápio especial de harmonizações do chef','Mesa reservada com vista para o Lago dos Patos'],
+      programacao:'20h Abertura · 21h Show ao vivo · 23h30 Encerramento',
+      img:'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=1400&q=90'
+    }
+  ];
+
+  // ── MODAL ──
+  let _eventsRef = [];
+
+  function abrirModal(id) {
+    const e = _eventsRef.find(ev => ev.id === id);
+    if (!e) return;
+    const [y,m,d] = e.date.split('-');
+    const dias = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+    const meses = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    const dataObj = new Date(e.date + 'T12:00:00');
+
+    document.getElementById('mImg').src = e.img;
+    document.getElementById('mImg').alt = e.title;
+    document.getElementById('mTag').textContent = e.tag || e.type;
+    document.getElementById('mData').textContent = `${dias[dataObj.getDay()]}, ${d} de ${meses[parseInt(m)-1]} de ${y} · ${e.time}h`;
+    document.getElementById('mTitle').textContent = e.title;
+    document.getElementById('mSubtitle').textContent = e.subtitle || '';
+    document.getElementById('mDesc').textContent = e.desc || '';
+    document.getElementById('mPrice').textContent = e.price || '';
+    document.getElementById('mProg').textContent = e.programacao || '';
+
+    const ul = document.getElementById('mInclusos');
+    ul.innerHTML = (e.inclusos || []).map(item => `
+      <li style="display:flex;align-items:flex-start;gap:10px;font-size:0.75rem;color:#8A8070;line-height:1.5;">
+        <span style="color:#C9A84C;flex-shrink:0;margin-top:1px;">✓</span>
+        <span>${item}</span>
+      </li>`).join('');
+
+    const modal = document.getElementById('eventoModal');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function fecharModal() {
+    document.getElementById('eventoModal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('eventoModal').addEventListener('click', function(e) {
+    if (e.target === this) fecharModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+
+  // ── RENDER ──
+  async function renderEventos() {
+    let allEvents = [];
+    try {
+      const { data, error } = await window._supabase
+        .from('eventos')
+        .select('*')
+        .eq('status', 'ativo')
+        .order('destaque', { ascending: false })
+        .order('data', { ascending: true });
+      if (!error && data && data.length) {
+        // normaliza campos do Supabase para o formato usado no template
+        allEvents = data.map(e => ({
+          id: e.id, destaque: e.destaque ? 'sim' : 'nao', status: e.status,
+          vagas: e.vagas, urgencia: e.urgencia,
+          tag: e.tag, type: e.tipo, date: e.data, time: e.hora,
+          title: e.titulo, subtitle: e.subtitulo, desc: e.descricao,
+          price: e.preco, inclusos: e.inclusos || [], programacao: e.programacao,
+          img: e.img_url
+        }));
+      }
+    } catch(_) {}
+    // fallback para DEMO_EVENTS se Supabase não responder
+    if (!allEvents.length) {
+      allEvents = DEMO_EVENTS.filter(e => e.status === 'ativo');
+    }
+    const sorted = [...allEvents].sort((a,b) => {
+      if (a.destaque==='sim' && b.destaque!=='sim') return -1;
+      if (b.destaque==='sim' && a.destaque!=='sim') return 1;
+      return new Date(a.date) - new Date(b.date);
+    });
+    _eventsRef = sorted;
+
+    if (!sorted.length) {
+      document.getElementById('carrosselWrap').style.display = 'none';
+      document.getElementById('eventosEmpty').style.display = 'block';
+      return;
+    }
+
+    // ── CARROSSEL ──
+    totalSlides = sorted.length;
+    const track = document.getElementById('carrosselTrack');
+    track.innerHTML = sorted.map((e, idx) => buildSlide(e, idx)).join('');
+    document.querySelectorAll('.slide-num-total').forEach(el => el.textContent = totalSlides);
+
+    const dotsEl = document.getElementById('carrosselDots');
+    dotsEl.innerHTML = sorted.map((_, i) => `
+      <button class="carousel-dot" onclick="goToSlide(${i});resetAuto()"
+        style="height:8px;border:none;border-radius:4px;cursor:pointer;transition:all 0.4s;background:${i===0?'#C9A84C':'rgba(255,255,255,0.25)'};width:${i===0?'28px':'8px'};padding:0;">
+      </button>`).join('');
+
+    goToSlide(0);
+    resetAuto();
+
+    let touchStartX = 0;
+    const wrap = document.getElementById('carrosselWrap');
+    wrap.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, {passive:true});
+    wrap.addEventListener('touchend', e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) diff > 0 ? slideNext() : slidePrev();
+    });
+
+    // ── GRADE ──
+    const dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    document.getElementById('eventosGrid').innerHTML = sorted.map((e) => {
+      const [y,m,d] = e.date.split('-');
+      const dataObj = new Date(e.date + 'T12:00:00');
+      const isDestaque = e.destaque === 'sim';
+      const borda = isDestaque ? 'rgba(201,168,76,0.35)' : 'rgba(255,255,255,0.06)';
+      return `
+        <div onclick="abrirModal(${e.id})" style="background:#111;border:1px solid ${borda};cursor:pointer;overflow:hidden;transition:transform 0.25s,border-color 0.3s,box-shadow 0.3s;"
+          onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(201,168,76,0.5)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.5)'"
+          onmouseout="this.style.transform='translateY(0)';this.style.borderColor='${borda}';this.style.boxShadow='none'">
+          <div style="height:140px;overflow:hidden;position:relative;">
+            <img src="${e.img}" alt="${e.title}"
+              style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55) saturate(1.05);transition:transform 0.6s;"
+              onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'"
+              onerror="this.src='https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=400&q=70'" />
+            ${isDestaque ? '<div style="position:absolute;top:10px;left:10px;background:#C9A84C;color:#0A0A0A;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;padding:3px 8px;font-weight:700;">★ Destaque</div>' : ''}
+            ${e.urgencia ? `<div style="position:absolute;top:10px;right:10px;background:${e.urgencia==='ESGOTANDO AGORA'?'#e53935':'#009c3b'};color:#fff;font-size:0.44rem;letter-spacing:0.15em;text-transform:uppercase;padding:3px 8px;font-weight:800;animation:pulse 1.5s infinite;">${e.urgencia}</div>` : ''}
+            ${e.vagas && e.vagas <= 10 ? `<div style="position:absolute;bottom:8px;right:10px;font-size:0.48rem;color:#fff;background:rgba(0,0,0,0.7);padding:2px 8px;border-radius:2px;">🔥 ${e.vagas} vagas</div>` : ''}
+          </div>
+          <div style="padding:16px 18px;">
+            <div style="font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(201,168,76,0.8);margin-bottom:7px;">${dias[dataObj.getDay()]}, ${d}/${m} · ${e.time}h</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:#F0EBE1;line-height:1.15;margin-bottom:4px;">${e.title}</div>
+            <div style="font-size:0.68rem;color:rgba(240,235,225,0.4);font-style:italic;margin-bottom:12px;">${e.subtitle||''}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:#C9A84C;">${e.price||''}</span>
+              <span style="font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(201,168,76,0.5);border:1px solid rgba(201,168,76,0.25);padding:4px 10px;">Ver mais</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+  // expõe funções ao HTML (necessário com type="module")
+  Object.assign(window, {
+    goToSlide, slideNext, slidePrev, resetAuto,
+    abrirModal, fecharModal
+  });
+
+  renderEventos();
+
+  // ── COUNTDOWN · Brasil x Haiti · 19/06/2026 21h30 BRT ──
+  (function() {
+    const alvo = new Date('2026-06-19T21:30:00-03:00').getTime();
+    function tick() {
+      const diff = alvo - Date.now();
+      const els = {
+        dias: document.getElementById('cdDias'),
+        horas: document.getElementById('cdHoras'),
+        min: document.getElementById('cdMin'),
+        seg: document.getElementById('cdSeg')
+      };
+      if (!els.dias) return;
+      if (diff <= 0) {
+        ['dias','horas','min','seg'].forEach(k => { if(els[k]) els[k].textContent = '00'; });
+        return;
+      }
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      els.dias.textContent  = String(d).padStart(2,'0');
+      els.horas.textContent = String(h).padStart(2,'0');
+      els.min.textContent   = String(m).padStart(2,'0');
+      els.seg.textContent   = String(s).padStart(2,'0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Tour 360° — usar foto equiretangular real do estabelecimento aqui
+  pannellum.viewer('panorama', {
+    type: 'equirectangular',
+    panorama: 'https://pannellum.org/images/alma.jpg',
+    autoLoad: true,
+    autoRotate: -2,
+    compass: false,
+    showControls: true,
+    hfov: 100,
+    minHfov: 60,
+    maxHfov: 120,
+    pitch: 2,
+    strings: {
+      loadButtonLabel: 'Clique para iniciar o Tour 360°',
+      loadingLabel: 'Carregando…',
+      bylineLabel: 'Lagoon Gastro Bar',
+      noPanoramaError: 'Foto 360° não encontrada.',
+      fileAccessError: 'Não foi possível carregar a imagem.',
+      malformedConfig: 'Configuração inválida.',
+      notUserInteraction: 'Transição iniciada automaticamente.',
+      genericWebGL: 'Erro WebGL.',
+      needsGoodWebGL: 'Seu navegador não suporta WebGL.'
+    }
+  });
+</script>
+</body>
+</html>

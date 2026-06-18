@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Lagoon Gastro Bar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C9A84C; --gold-light: #E8C96D;
+      --dark: #080808; --dark-2: #101010; --dark-3: #181818; --dark-4: #222;
+      --text: #F0EBE1; --text-muted: #8A8070;
+      --green: #2E7D52; --red: #C0392B; --blue: #2980B9;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--text); font-family: 'Montserrat', sans-serif; min-height: 100vh; }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at center, #1a1408 0%, var(--dark) 70%);
+    }
+    .login-box {
+      background: var(--dark-3); border: 1px solid rgba(201,168,76,0.2);
+      padding: 56px 48px; width: 100%; max-width: 420px; text-align: center;
+    }
+    .login-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 300; color: var(--gold-light);
+      letter-spacing: 0.2em; margin-bottom: 6px;
+    }
+    .login-sub {
+      font-size: 0.58rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 40px;
+    }
+    .login-box input {
+      width: 100%; background: var(--dark-4); border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 14px 18px; font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem; margin-bottom: 12px; outline: none;
+      transition: border-color 0.3s;
+    }
+    .login-box input:focus { border-color: var(--gold); }
+    .login-box input::placeholder { color: var(--text-muted); }
+    .login-err { color: #e74c3c; font-size: 0.72rem; margin-bottom: 12px; display: none; }
+    .btn { width: 100%; padding: 14px; background: var(--gold); color: var(--dark);
+      border: none; font-family: 'Montserrat', sans-serif;
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    .btn:hover { background: var(--gold-light); }
+    .btn-outline {
+      background: none; border: 1px solid var(--gold); color: var(--gold);
+    }
+    .btn-outline:hover { background: var(--gold); color: var(--dark); }
+    .btn-danger { background: var(--red); color: #fff; }
+    .btn-danger:hover { background: #e74c3c; }
+    .btn-sm { padding: 8px 16px; font-size: 0.6rem; width: auto; }
+
+    /* ADMIN LAYOUT */
+    .admin-wrap { display: none; min-height: 100vh; }
+    .admin-wrap.active { display: flex; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px; flex-shrink: 0; background: var(--dark-2);
+      border-right: 1px solid rgba(201,168,76,0.1);
+      display: flex; flex-direction: column;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 28px 24px; border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .sidebar-logo span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 300; color: var(--gold-light); letter-spacing: 0.15em;
+    }
+    .sidebar-logo small {
+      display: block; font-size: 0.55rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--text-muted); margin-top: 2px;
+    }
+    .sidebar-nav { flex: 1; padding: 20px 0; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 24px; cursor: pointer; transition: all 0.2s;
+      color: var(--text-muted); font-size: 0.75rem; letter-spacing: 0.05em;
+      border-left: 2px solid transparent;
+    }
+    .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,168,76,0.05); }
+    .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+    .sidebar-footer {
+      padding: 20px 24px; border-top: 1px solid rgba(201,168,76,0.1);
+    }
+    .sidebar-footer button {
+      width: 100%; padding: 10px; background: none;
+      border: 1px solid rgba(154,144,128,0.2); color: var(--text-muted);
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .sidebar-footer button:hover { border-color: var(--red); color: var(--red); }
+
+    /* MAIN */
+    .main { flex: 1; overflow-y: auto; }
+    .main-header {
+      padding: 32px 40px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .main-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: var(--text);
+    }
+    .main-header h1 em { font-style: italic; color: var(--gold-light); }
+    .main-content { padding: 40px; }
+
+    /* TABS */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* STATS */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px;
+    }
+    .stat-card {
+      background: var(--dark-3); border: 1px solid rgba(255,255,255,0.05);
+      padding: 24px; border-bottom: 2px solid var(--gold);
+    }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300; color: var(--gold-light); line-height: 1;
+    }
+    .stat-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+
+    /* FORM */
+    .form-section {
+      background: var(--dark-3); border: 1px solid rgba(255,255,255,0.05);
+      padding: 32px; margin-bottom: 32px;
+    }
+    .form-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 400; color: var(--text); margin-bottom: 24px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
+    label { display: block; font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    input[type=text], input[type=date], input[type=time], input[type=url], textarea, select {
+      width: 100%; background: var(--dark-4); border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text); padding: 12px 16px; font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem; outline: none; transition: border-color 0.3s; resize: vertical;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--gold); }
+    input::placeholder, textarea::placeholder { color: var(--text-muted); }
+    select option { background: var(--dark-4); }
+    .form-actions { display: flex; gap: 12px; margin-top: 20px; }
+
+    /* EVENTS LIST */
+    .events-list { display: flex; flex-direction: column; gap: 16px; }
+    .event-item {
+      background: var(--dark-3); border: 1px solid rgba(255,255,255,0.05);
+      padding: 20px 24px;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .event-img-thumb {
+      width: 80px; height: 60px; object-fit: cover; flex-shrink: 0;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .event-info { flex: 1; }
+    .event-title { font-size: 0.9rem; color: var(--text); margin-bottom: 4px; }
+    .event-meta { font-size: 0.68rem; color: var(--text-muted); }
+    .event-badge {
+      font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 4px 10px; margin-left: 10px;
+    }
+    .badge-active { background: rgba(46,125,82,0.2); color: #5CBF87; border: 1px solid rgba(46,125,82,0.3); }
+    .badge-inactive { background: rgba(192,57,43,0.2); color: #E74C3C; border: 1px solid rgba(192,57,43,0.3); }
+    .event-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    /* RESERVATIONS TABLE */
+    .res-table { width: 100%; border-collapse: collapse; }
+    .res-table th {
+      padding: 12px 16px; text-align: left;
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); border-bottom: 1px solid rgba(201,168,76,0.2);
+      background: var(--dark-3);
+    }
+    .res-table td {
+      padding: 14px 16px; font-size: 0.78rem; color: var(--text-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .res-table tr:hover td { background: rgba(255,255,255,0.02); }
+    .status-badge {
+      padding: 4px 10px; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .status-confirmed { background: rgba(46,125,82,0.15); color: #5CBF87; }
+    .status-pending { background: rgba(201,168,76,0.15); color: var(--gold); }
+    .status-cancelled { background: rgba(192,57,43,0.15); color: #E74C3C; }
+
+    /* TABLE MAP PREVIEW */
+    .table-map-admin {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 24px;
+    }
+    .table-chip {
+      background: var(--dark-4); border: 1px solid rgba(255,255,255,0.08);
+      padding: 12px 8px; text-align: center; cursor: pointer; transition: all 0.2s;
+    }
+    .table-chip.available { border-color: rgba(46,125,82,0.4); }
+    .table-chip.reserved { border-color: rgba(192,57,43,0.4); background: rgba(192,57,43,0.05); }
+    .table-chip .t-num { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--text); }
+    .table-chip .t-info { font-size: 0.58rem; color: var(--text-muted); margin-top: 2px; }
+    .table-chip .t-status { font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+    .table-chip.available .t-status { color: #5CBF87; }
+    .table-chip.reserved .t-status { color: #E74C3C; }
+
+    .empty-state {
+      text-align: center; padding: 60px; color: var(--text-muted); font-size: 0.82rem;
+    }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 16px; }
+
+    /* NOTIFICATION */
+    .notif {
+      position: fixed; top: 24px; right: 24px; z-index: 999;
+      background: var(--dark-3); border-left: 3px solid var(--green);
+      padding: 16px 24px; font-size: 0.78rem; color: var(--text);
+      transform: translateX(120%); transition: transform 0.4s;
+      max-width: 320px;
+    }
+    .notif.show { transform: translateX(0); }
+
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+      .form-row.three { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Lagoon</div>
+    <div class="login-sub">Painel Administrativo</div>
+    <input type="text" id="loginUser" placeholder="Usuário" />
+    <input type="password" id="loginPass" placeholder="Senha" />
+    <div class="login-err" id="loginErr">Usuário ou senha incorretos.</div>
+    <button class="btn" onclick="doLogin()">Entrar</button>
+    <p style="margin-top:20px; font-size:0.65rem; color:var(--text-muted);">
+      Demo: <strong style="color:var(--gold)">admin</strong> / <strong style="color:var(--gold)">lagoon2025</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-wrap" id="adminWrap">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span>Lagoon</span>
+      <small>Painel Admin</small>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="switchTab('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </div>
+      <div class="nav-item" onclick="switchTab('eventos')">
+        <span class="icon">🎉</span> Eventos / Banners
+      </div>
+      <div class="nav-item" onclick="switchTab('reservas')">
+        <span class="icon">🪑</span> Reservas
+      </div>
+      <div class="nav-item" onclick="switchTab('mesas')">
+        <span class="icon">🗺️</span> Mapa de Mesas
+      </div>
+      <div class="nav-item" onclick="switchTab('clientes')">
+        <span class="icon">👥</span> Clientes
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button onclick="doLogout()">Sair do painel</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="tab-panel active" id="tab-dashboard">
+      <div class="main-header">
+        <h1>Bem-vindo, <em>Rafael</em></h1>
+        <a href="index.html" target="_blank" style="color:var(--gold); font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; text-decoration:none;">Ver Site →</a>
+      </div>
+      <div class="main-content">
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-num" id="statEventos">0</div>
+            <div class="stat-label">Eventos Ativos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statReservas">0</div>
+            <div class="stat-label">Reservas Hoje</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statMesas">0</div>
+            <div class="stat-label">Mesas Disponíveis</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statClientes">0</div>
+            <div class="stat-label">Clientes Cadastrados</div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Próximos Eventos</h3>
+          <div id="dashEventos" class="events-list"></div>
+        </div>
+
+        <div class="form-section">
+          <h3>Últimas Reservas</h3>
+          <table class="res-table" id="dashReservas">
+            <thead>
+              <tr>
+                <th>Cliente</th><th>Mesa</th><th>Data</th><th>Hora</th><th>Pessoas</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="dashReservasTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENTOS -->
+    <div class="tab-panel" id="tab-eventos">
+      <div class="main-header">
+        <h1>Eventos & <em>Banners</em></h1>
+        <button class="btn btn-sm" onclick="openEventForm()">+ Novo Evento</button>
+      </div>
+      <div class="main-content">
+
+        <div class="form-section" id="eventForm" style="display:none;">
+          <h3 id="eventFormTitle">Novo Evento</h3>
+          <input type="hidden" id="editingEventId" />
+          <div class="form-row">
+            <div>
+              <label>Título do Evento *</label>
+              <input type="text" id="evTitle" placeholder="Ex: Samba com Feijoada" />
+            </div>
+            <div>
+              <label>Subtítulo / Grupo Musical</label>
+              <input type="text" id="evSubtitle" placeholder="Ex: Grupo DuPagode" />
+            </div>
+          </div>
+          <div class="form-row three">
+            <div>
+              <label>Data *</label>
+              <input type="date" id="evDate" />
+            </div>
+            <div>
+              <label>Hora de Início</label>
+              <input type="time" id="evTime" value="20:00" />
+            </div>
+            <div>
+              <label>Tipo de Evento</label>
+              <select id="evType">
+                <option>Música ao Vivo</option>
+                <option>Happy Hour</option>
+                <option>Feijoada</option>
+                <option>Noite Temática</option>
+                <option>Evento Especial</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row full">
+            <div>
+              <label>Descrição</label>
+              <textarea id="evDesc" rows="3" placeholder="Descreva o evento para os clientes..."></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label>URL da Imagem do Banner</label>
+              <input type="url" id="evImg" placeholder="https://... (deixe vazio para imagem padrão)" />
+            </div>
+            <div>
+              <label>Preço / Couvert</label>
+              <input type="text" id="evPrice" placeholder="Ex: R$ 35 por pessoa ou Gratuito" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label>Status</label>
+              <select id="evStatus">
+                <option value="ativo">Ativo (visível no site)</option>
+                <option value="inativo">Inativo (oculto)</option>
+              </select>
+            </div>
+            <div>
+              <label>Destaque</label>
+              <select id="evDestaque">
+                <option value="sim">Sim — aparecer em primeiro</option>
+                <option value="nao">Não</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-sm" onclick="saveEvent()">Salvar Evento</button>
+            <button class="btn btn-sm btn-outline" onclick="closeEventForm()">Cancelar</button>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Eventos Cadastrados</h3>
+          <div id="eventsList" class="events-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESERVAS -->
+    <div class="tab-panel" id="tab-reservas">
+      <div class="main-header">
+        <h1>Reser<em>vas</em></h1>
+        <div style="display:flex; gap:12px; align-items:center;">
+          <input type="date" id="filterDate" onchange="renderReservas()" style="padding:8px 12px; background:var(--dark-3); border:1px solid rgba(255,255,255,0.1); color:var(--text); font-family:Montserrat,sans-serif; font-size:0.75rem; outline:none;" />
+          <button class="btn btn-sm btn-outline" onclick="exportReservas()">Exportar</button>
+        </div>
+      </div>
+      <div class="main-content">
+        <table class="res-table">
+          <thead>
+            <tr>
+              <th>Cliente</th><th>Telefone</th><th>Mesa</th><th>Data</th><th>Hora</th><th>Pessoas</th><th>Status</th><th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="reservasTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MESAS -->
+    <div class="tab-panel" id="tab-mesas">
+      <div class="main-header">
+        <h1>Mapa de <em>Mesas</em></h1>
+        <div style="font-size:0.68rem; color:var(--text-muted);">
+          <span style="color:#5CBF87">●</span> Disponível &nbsp;
+          <span style="color:#E74C3C">●</span> Reservada
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="table-map-admin" id="adminTableMap"></div>
+      </div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div class="tab-panel" id="tab-clientes">
+      <div class="main-header">
+        <h1>Clien<em>tes</em></h1>
+      </div>
+      <div class="main-content">
+        <table class="res-table">
+          <thead>
+            <tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th>Cadastro</th><th>Reservas</th></tr>
+          </thead>
+          <tbody id="clientesTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- NOTIF -->
+<div class="notif" id="notif"></div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+const sb = createClient(
+  'https://amrwxiiqxbbuvhtqkzzi.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtcnd4aWlxeGJidXZodHFrenppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTMwMzUsImV4cCI6MjA5NzM4OTAzNX0.qwxSprDf5hGzuU9dzVkQ7tlG38U2KPNXeLzkpPp1adk'
+);
+
+// ── AUTH ──
+const ADMIN = { user: 'admin', pass: 'lagoon2025' };
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value;
+  const p = document.getElementById('loginPass').value;
+  if (u === ADMIN.user && p === ADMIN.pass) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminWrap').classList.add('active');
+    initAdmin();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogout() {
+  document.getElementById('adminWrap').classList.remove('active');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+// ── DATA → Supabase (ver funções abaixo) ──
+
+// ── TABS ──
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'eventos') renderEvents();
+  if (name === 'reservas') renderReservas();
+  if (name === 'mesas') renderAdminMap();
+  if (name === 'clientes') renderClientes();
+}
+
+// ── INIT ──
+function initAdmin() {
+  renderDashboard();
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('filterDate').value = today;
+}
+
+// ── DASHBOARD ──
+async function renderDashboard() {
+  const today = new Date().toISOString().split('T')[0];
+  const [{ count: cEventos }, { data: todayRes }, { count: cClientes }] = await Promise.all([
+    sb.from('eventos').select('*', { count: 'exact', head: true }).eq('status','ativo'),
+    sb.from('reservas').select('mesa, status, codigo, data, hora, pessoas').eq('data', today),
+    sb.from('clientes').select('*', { count: 'exact', head: true })
+  ]);
+  const reservedMesas = new Set((todayRes||[]).filter(r => r.status !== 'cancelada').map(r => r.mesa));
+  document.getElementById('statEventos').textContent = cEventos ?? 0;
+  document.getElementById('statReservas').textContent = (todayRes||[]).length;
+  document.getElementById('statMesas').textContent = 20 - reservedMesas.size;
+  document.getElementById('statClientes').textContent = cClientes ?? 0;
+
+  const { data: eventos } = await sb.from('eventos').select('*').eq('status','ativo').order('data').limit(3);
+  const dashEl = document.getElementById('dashEventos');
+  dashEl.innerHTML = (eventos||[]).map(e => eventItemHTML(e)).join('') || '<div class="empty-state"><div class="icon">📅</div>Nenhum evento cadastrado ainda.</div>';
+
+  const { data: reservas } = await sb.from('reservas').select('*, clientes(nome, telefone)').order('criado_em', { ascending: false }).limit(5);
+  const tbody = document.getElementById('dashReservasTbody');
+  tbody.innerHTML = (reservas||[]).map(r => `
+    <tr>
+      <td style="color:var(--text)">${r.clientes?.nome || '—'}</td>
+      <td>Mesa ${r.mesa}</td>
+      <td>${formatDate(r.data)}</td>
+      <td>${r.hora}</td>
+      <td>${r.pessoas} pax</td>
+      <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+    </tr>`).join('') || '<tr><td colspan="6" style="text-align:center; padding:32px; color:var(--text-muted)">Sem reservas.</td></tr>';
+}
+
+// ── EVENTS ──
+async function openEventForm(id) {
+  document.getElementById('eventForm').style.display = 'block';
+  if (id) {
+    const { data: ev } = await sb.from('eventos').select('*').eq('id', id).single();
+    document.getElementById('eventFormTitle').textContent = 'Editar Evento';
+    document.getElementById('editingEventId').value = id;
+    document.getElementById('evTitle').value = ev.titulo;
+    document.getElementById('evSubtitle').value = ev.subtitulo || '';
+    document.getElementById('evDate').value = ev.data;
+    document.getElementById('evTime').value = ev.hora;
+    document.getElementById('evType').value = ev.tipo || '';
+    document.getElementById('evDesc').value = ev.descricao || '';
+    document.getElementById('evImg').value = ev.img_url || '';
+    document.getElementById('evPrice').value = ev.preco || '';
+    document.getElementById('evStatus').value = ev.status;
+    document.getElementById('evDestaque').value = ev.destaque ? 'sim' : 'nao';
+  } else {
+    document.getElementById('eventFormTitle').textContent = 'Novo Evento';
+    document.getElementById('editingEventId').value = '';
+    ['evTitle','evSubtitle','evDate','evDesc','evImg','evPrice'].forEach(f => document.getElementById(f).value = '');
+    document.getElementById('evTime').value = '20:00';
+    document.getElementById('evStatus').value = 'ativo';
+    document.getElementById('evDestaque').value = 'nao';
+  }
+  document.getElementById('evTitle').focus();
+}
+function closeEventForm() { document.getElementById('eventForm').style.display = 'none'; }
+
+async function saveEvent() {
+  const titulo = document.getElementById('evTitle').value.trim();
+  if (!titulo) { notify('Preencha o título do evento.', 'error'); return; }
+  const editId = document.getElementById('editingEventId').value;
+  const payload = {
+    titulo, subtitulo: document.getElementById('evSubtitle').value,
+    data: document.getElementById('evDate').value,
+    hora: document.getElementById('evTime').value,
+    tipo: document.getElementById('evType').value,
+    descricao: document.getElementById('evDesc').value,
+    img_url: document.getElementById('evImg').value || 'https://images.unsplash.com/photo-1705593973313-75de7bf95b56?w=700&q=80',
+    preco: document.getElementById('evPrice').value,
+    status: document.getElementById('evStatus').value,
+    destaque: document.getElementById('evDestaque').value === 'sim'
+  };
+  const { error } = editId
+    ? await sb.from('eventos').update(payload).eq('id', editId)
+    : await sb.from('eventos').insert(payload);
+  if (error) { notify('Erro ao salvar evento.', 'error'); return; }
+  closeEventForm(); renderEvents(); notify('Evento salvo com sucesso!');
+}
+
+async function deleteEvent(id) {
+  if (!confirm('Excluir este evento?')) return;
+  await sb.from('eventos').delete().eq('id', id);
+  renderEvents(); notify('Evento excluído.');
+}
+
+async function toggleEventStatus(id, currentStatus) {
+  const novoStatus = currentStatus === 'ativo' ? 'inativo' : 'ativo';
+  await sb.from('eventos').update({ status: novoStatus }).eq('id', id);
+  renderEvents(); notify(`Evento ${novoStatus === 'ativo' ? 'ativado' : 'desativado'}.`);
+}
+
+function eventItemHTML(e) {
+  const status = e.status; const destaque = e.destaque;
+  const titulo = e.titulo || e.title; const subtitulo = e.subtitulo || e.subtitle;
+  const img = e.img_url || e.img; const tipo = e.tipo || e.type; const preco = e.preco || e.price;
+  const data = e.data || e.date; const hora = e.hora || e.time;
+  return `
+    <div class="event-item">
+      <img class="event-img-thumb" src="${img}" alt="${titulo}" onerror="this.style.display='none'" />
+      <div class="event-info">
+        <div class="event-title">${titulo} ${subtitulo ? '— ' + subtitulo : ''}
+          <span class="event-badge ${status === 'ativo' ? 'badge-active' : 'badge-inactive'}">${status}</span>
+          ${destaque ? '<span class="event-badge badge-active">★ Destaque</span>' : ''}
+        </div>
+        <div class="event-meta">${formatDate(data)} às ${hora} · ${tipo} · ${preco || 'Sem preço'}</div>
+      </div>
+      <div class="event-actions">
+        <button class="btn btn-sm btn-outline" onclick="openEventForm('${e.id}')">Editar</button>
+        <button class="btn btn-sm btn-outline" onclick="toggleEventStatus('${e.id}','${status}')">${status === 'ativo' ? 'Ocultar' : 'Ativar'}</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteEvent('${e.id}')">✕</button>
+      </div>
+    </div>`;
+}
+
+async function renderEvents() {
+  const { data: eventos } = await sb.from('eventos').select('*').order('data');
+  const list = document.getElementById('eventsList');
+  list.innerHTML = (eventos||[]).length
+    ? eventos.map(e => eventItemHTML(e)).join('')
+    : '<div class="empty-state"><div class="icon">🎉</div>Nenhum evento cadastrado. Clique em "+ Novo Evento" para começar.</div>';
+}
+
+// ── RESERVAS ──
+async function renderReservas() {
+  const filter = document.getElementById('filterDate').value;
+  let query = sb.from('reservas').select('*, clientes(nome, telefone)').order('hora');
+  if (filter) query = query.eq('data', filter);
+  const { data: reservas } = await query;
+  const tbody = document.getElementById('reservasTbody');
+  tbody.innerHTML = (reservas||[]).length
+    ? reservas.map(r => `
+        <tr>
+          <td style="color:var(--text)">${r.clientes?.nome || '—'}</td>
+          <td>${r.clientes?.telefone || '—'}</td>
+          <td>Mesa ${r.mesa}</td>
+          <td>${formatDate(r.data)}</td>
+          <td>${r.hora}</td>
+          <td>${r.pessoas} pessoas</td>
+          <td><span class="status-badge status-${r.status}">${r.status}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline" onclick="changeStatus('${r.id}','confirmada')">✓</button>
+            <button class="btn btn-sm btn-danger" onclick="changeStatus('${r.id}','cancelada')">✕</button>
+          </td>
+        </tr>`).join('')
+    : '<tr><td colspan="8" style="text-align:center; padding:40px; color:var(--text-muted)">Nenhuma reserva para esta data.</td></tr>';
+}
+
+async function changeStatus(id, status) {
+  await sb.from('reservas').update({ status }).eq('id', id);
+  renderReservas(); notify('Status atualizado.');
+}
+
+async function exportReservas() {
+  const { data: reservas } = await sb.from('reservas').select('*, clientes(nome, telefone)').order('data');
+  const csv = ['Nome,Telefone,Mesa,Data,Hora,Pessoas,Status,Código']
+    .concat((reservas||[]).map(r => `${r.clientes?.nome||''},${r.clientes?.telefone||''},Mesa ${r.mesa},${r.data},${r.hora},${r.pessoas},${r.status},${r.codigo||''}`))
+    .join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'reservas-lagoon.csv'; a.click();
+}
+
+// ── MAPA ADMIN ──
+async function renderAdminMap() {
+  const today = new Date().toISOString().split('T')[0];
+  const { data: reservas } = await sb.from('reservas').select('mesa').eq('data', today).neq('status','cancelada');
+  const reservedMesas = new Set((reservas||[]).map(r => r.mesa));
+  const el = document.getElementById('adminTableMap');
+  el.innerHTML = Array.from({length: 20}, (_, i) => {
+    const n = i + 1; const reserved = reservedMesas.has(n);
+    return `
+      <div class="table-chip ${reserved ? 'reserved' : 'available'}">
+        <div class="t-num">${n}</div>
+        <div class="t-info">${n<=5?'2 lug.':n<=12?'4 lug.':n<=18?'6 lug.':'8 lug.'}</div>
+        <div class="t-status">${reserved ? 'Reservada' : 'Livre'}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── CLIENTES ──
+async function renderClientes() {
+  const { data: clientes } = await sb.from('clientes').select('*').order('cadastro', { ascending: false });
+  document.getElementById('clientesTbody').innerHTML = (clientes||[]).length
+    ? clientes.map(c => `
+        <tr>
+          <td style="color:var(--text)">${c.nome}</td>
+          <td>${c.email}</td>
+          <td>${c.telefone||'—'}</td>
+          <td>${c.nascimento ? formatDate(c.nascimento) : '—'}</td>
+          <td>${formatDate(c.cadastro)}</td>
+        </tr>`).join('')
+    : '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text-muted)">Nenhum cliente cadastrado ainda.</td></tr>';
+}
+
+// ── expõe funções ao HTML ──
+Object.assign(window, {
+  doLogin, doLogout, switchTab, initAdmin,
+  openEventForm, closeEventForm, saveEvent, deleteEvent, toggleEventStatus,
+  renderReservas, changeStatus, exportReservas,
+  renderAdminMap, renderClientes
+});
+
+// ── UTILS ──
+function formatDate(d) {
+  if (!d) return '—';
+  const [y, m, day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+function notify(msg, type = 'success') {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.style.borderLeftColor = type === 'error' ? '#e74c3c' : '#2E7D52';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

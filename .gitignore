@@ -1,0 +1,12 @@
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Segredos — nunca commitar
+.env
+.env.local
+*.env
+
+# IDEs
+.vscode/
+.idea/
