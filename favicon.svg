@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="10" fill="#ffffff"/>
+
+  <!-- Lagoon em azul royal, serif -->
+  <text x="32" y="36"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="22"
+    font-weight="400"
+    fill="#1a4fa0"
+    text-anchor="middle"
+    letter-spacing="0.5">Lagoon</text>
+
+  <!-- Linha decorativa dourada -->
+  <line x1="8" y1="42" x2="56" y2="42" stroke="#c8a020" stroke-width="0.8" opacity="0.8"/>
+
+  <!-- GASTRO BAR em dourado -->
+  <text x="32" y="52"
+    font-family="'Arial Narrow', Arial, sans-serif"
+    font-size="6.5"
+    font-weight="700"
+    fill="#c8a020"
+    text-anchor="middle"
+    letter-spacing="2">GASTRO BAR</text>
+</svg>
