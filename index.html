@@ -602,6 +602,43 @@
       color: var(--text-muted);
     }
     .tour-hint span { color: var(--gold); }
+    .tour-ambientes {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .ambiente-btn {
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--text-muted);
+      padding: 8px 20px;
+      border-radius: 32px;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .ambiente-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .ambiente-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #0d1117;
+      font-weight: 600;
+    }
+    .tour-ambiente-label {
+      text-align: center;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      opacity: 0.8;
+    }
 
     /* ── RESERVATION FLOAT ── */
     .reserve-float {
@@ -715,6 +752,14 @@
       <div class="divider"></div>
       <p>Arraste para explorar cada canto do Lagoon antes mesmo de chegar. Sinta a atmosfera, a decoração e o ambiente que fazem da sua noite algo único.</p>
     </div>
+    <!-- Seletor de ambientes — substituir panorama_url pelas fotos reais -->
+    <div class="tour-ambientes">
+      <button class="ambiente-btn active" onclick="trocarAmbiente(this,'https://pannellum.org/images/alma.jpg','Salão Principal')">🪑 Salão</button>
+      <button class="ambiente-btn" onclick="trocarAmbiente(this,'https://pannellum.org/images/alma.jpg','Varanda · Lago dos Patos')">🌊 Varanda</button>
+      <button class="ambiente-btn" onclick="trocarAmbiente(this,'https://pannellum.org/images/alma.jpg','Bar & Coquetéis')">🍸 Bar</button>
+      <button class="ambiente-btn" onclick="trocarAmbiente(this,'https://pannellum.org/images/alma.jpg','Área VIP')">⭐ VIP</button>
+    </div>
+    <div id="tourAmbienteLabel" class="tour-ambiente-label">Salão Principal</div>
     <div id="panorama"></div>
     <p class="tour-hint">
       <span>Clique e arraste</span> para explorar · Use a roda do mouse para dar zoom
@@ -1366,10 +1411,19 @@
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  // Tour 360° — usar foto equiretangular real do estabelecimento aqui
-  pannellum.viewer('panorama', {
+  // Tour 360° — ambientes configurados aqui
+  // Quando o cliente entregar as fotos, substitua as URLs abaixo por cada ambiente
+  // URLs de exemplo — substituir pelas fotos reais do estabelecimento
+  const AMBIENTES = {
+    'Salão Principal':          'https://pannellum.org/images/bma-0.jpg',
+    'Varanda · Lago dos Patos': 'https://pannellum.org/images/bma-1.jpg',
+    'Bar & Coquetéis':          'https://pannellum.org/images/bma-2.jpg',
+    'Área VIP':                 'https://pannellum.org/images/bma-3.jpg',
+  };
+
+  let tourViewer = pannellum.viewer('panorama', {
     type: 'equirectangular',
-    panorama: 'https://pannellum.org/images/alma.jpg',
+    panorama: 'https://pannellum.org/images/bma-0.jpg',
     autoLoad: true,
     autoRotate: -2,
     compass: false,
@@ -1390,6 +1444,37 @@
       needsGoodWebGL: 'Seu navegador não suporta WebGL.'
     }
   });
+
+  function trocarAmbiente(btn, url, label) {
+    document.querySelectorAll('.ambiente-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tourAmbienteLabel').textContent = label;
+    tourViewer.destroy();
+    tourViewer = pannellum.viewer('panorama', {
+      type: 'equirectangular',
+      panorama: url,
+      autoLoad: true,
+      autoRotate: -2,
+      compass: false,
+      showControls: true,
+      hfov: 100,
+      minHfov: 60,
+      maxHfov: 120,
+      pitch: 2,
+      strings: {
+        loadButtonLabel: 'Clique para iniciar o Tour 360°',
+        loadingLabel: 'Carregando…',
+        bylineLabel: 'Lagoon Gastro Bar',
+        noPanoramaError: 'Foto 360° não encontrada.',
+        fileAccessError: 'Não foi possível carregar a imagem.',
+        malformedConfig: 'Configuração inválida.',
+        notUserInteraction: 'Transição iniciada automaticamente.',
+        genericWebGL: 'Erro WebGL.',
+        needsGoodWebGL: 'Seu navegador não suporta WebGL.'
+      }
+    });
+  }
+  Object.assign(window, { trocarAmbiente });
 </script>
 </body>
 </html>
